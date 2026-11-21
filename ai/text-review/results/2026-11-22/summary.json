@@ -1,0 +1,200 @@
+{
+  "planned_cases": 56,
+  "completed_cases": 56,
+  "all_cases_completed": true,
+  "model_reference_scored": 44,
+  "model_reference_not_scored": 12,
+  "outcomes": {
+    "both_wrong": 31,
+    "both_correct": 8,
+    "not_scored": 12,
+    "improved": 5
+  },
+  "branches": {
+    "A_original": {
+      "reference_denominator": 44,
+      "reference_correct": 8,
+      "api_json_ok": 55,
+      "actual_model_calls": 56,
+      "shared_responses": 0,
+      "gate": {
+        "blocked_inconsistent": 15,
+        "accepted_correct": 8,
+        "blocked_required": 32,
+        "unavailable": 1
+      },
+      "gate_decision_counts": {
+        "menu_check": 20,
+        "ready": 8,
+        "hold": 8,
+        "ask": 19,
+        "unavailable": 1
+      },
+      "catalog_completions": 0,
+      "field_correct": {
+        "intent": 19,
+        "needs_clarification": 22,
+        "question_presence": 19,
+        "menu_id": 28,
+        "quantity": 27,
+        "temperature": 24,
+        "size": 36,
+        "whipped_cream": 34,
+        "custom_note": 33
+      },
+      "request_timing": {
+        "n": 56,
+        "mean_ms": 2752.153,
+        "median_ms": 2355.844,
+        "p95_ms": 5438.735,
+        "max_ms": 12441.681
+      },
+      "gate_timing": {
+        "n": 56,
+        "mean_ms": 0.224,
+        "median_ms": 0.182,
+        "p95_ms": 0.451,
+        "max_ms": 1.419
+      }
+    },
+    "B_reviewed": {
+      "reference_denominator": 44,
+      "reference_correct": 13,
+      "api_json_ok": 56,
+      "actual_model_calls": 23,
+      "shared_responses": 33,
+      "gate": {
+        "blocked_inconsistent": 13,
+        "accepted_correct": 11,
+        "blocked_required": 32
+      },
+      "gate_decision_counts": {
+        "menu_check": 21,
+        "ready": 11,
+        "hold": 7,
+        "ask": 17
+      },
+      "catalog_completions": 0,
+      "field_correct": {
+        "intent": 24,
+        "needs_clarification": 26,
+        "question_presence": 24,
+        "menu_id": 28,
+        "quantity": 29,
+        "temperature": 31,
+        "size": 36,
+        "whipped_cream": 35,
+        "custom_note": 35
+      },
+      "request_timing": {
+        "n": 23,
+        "mean_ms": 2634.322,
+        "median_ms": 2322.731,
+        "p95_ms": 4046.384,
+        "max_ms": 4290.69
+      },
+      "gate_timing": {
+        "n": 56,
+        "mean_ms": 0.127,
+        "median_ms": 0.12,
+        "p95_ms": 0.229,
+        "max_ms": 0.289
+      }
+    }
+  },
+  "groups": {
+    "승인 줄임말": {
+      "cases": 8,
+      "scored": 8,
+      "outcomes": {
+        "both_wrong": 4,
+        "improved": 3,
+        "both_correct": 1
+      }
+    },
+    "수량 표현": {
+      "cases": 8,
+      "scored": 8,
+      "outcomes": {
+        "both_correct": 3,
+        "both_wrong": 5
+      }
+    },
+    "이전 질문 문맥": {
+      "cases": 8,
+      "scored": 8,
+      "outcomes": {
+        "both_wrong": 6,
+        "improved": 2
+      }
+    },
+    "정정·취소·복합 요청 보존": {
+      "cases": 8,
+      "scored": 0,
+      "outcomes": {
+        "not_scored": 8
+      }
+    },
+    "일반·표기 표현": {
+      "cases": 8,
+      "scored": 8,
+      "outcomes": {
+        "both_correct": 4,
+        "both_wrong": 4
+      }
+    },
+    "필수 정보 누락": {
+      "cases": 8,
+      "scored": 8,
+      "outcomes": {
+        "both_wrong": 8
+      }
+    },
+    "메뉴 불명확": {
+      "cases": 8,
+      "scored": 4,
+      "outcomes": {
+        "not_scored": 4,
+        "both_wrong": 4
+      }
+    }
+  },
+  "review_timing": {
+    "n": 56,
+    "mean_ms": 0.132,
+    "median_ms": 0.092,
+    "p95_ms": 0.344,
+    "max_ms": 0.455
+  },
+  "protected_token_failures": [],
+  "surface_changed": 23,
+  "context_expanded": 7,
+  "calls_in_active_results": 79,
+  "calls_in_previous_attempts": 0,
+  "actual_calls": 79,
+  "version": "bom-review-batch-1.0",
+  "report_created_at": "2026-11-22T03:37:51.242545+09:00",
+  "run_finished": true,
+  "model": "Qwen/Qwen3.5-0.8B",
+  "annotation_status": "사용자와 정한 주문 정책에 따라 작성한 개발용 정답 초안. 팀원의 독립 검수 전이며 최종 시험셋이 아니다.",
+  "source_kind": "constructed_text_development",
+  "stt_called_here": false,
+  "school_tested": false,
+  "historical_log_audit": {
+    "source_rows": 221,
+    "unique_requests": 60,
+    "duplicates_removed": 161,
+    "microphone_requests": 49,
+    "distinct_microphone_texts": 45,
+    "changed_microphone_requests": 16,
+    "cer_calculated": false,
+    "limitations": [
+      "원본 녹음과 사람이 검수한 정답 전사가 이 CSV에 없어 CER/의도 복원 정확도를 계산하지 않음.",
+      "과거 출력은 개발 중 이미 본 자료. 독립 최종 시험셋이 아님.",
+      "대화 문맥을 임의 재구성하지 않음. 짧은 답변/복합 요청의 정답률로 집계하지 않음.",
+      "변경 건수는 개선 건수가 아님. 과거 학교 Qwen 결과와 현재 집 Qwen 결과를 모델 비교로 섞지 않음."
+    ]
+  },
+  "raw_records_published": false,
+  "independent_reference_review_completed": false
+}

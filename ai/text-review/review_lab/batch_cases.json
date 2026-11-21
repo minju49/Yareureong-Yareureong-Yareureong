@@ -1,0 +1,1230 @@
+{
+  "version": "bom-review-dev-cases-1.0",
+  "source_kind": "constructed_text_development",
+  "annotation_status": "사용자와 정한 주문 정책에 따라 작성한 개발용 정답 초안. 팀원의 독립 검수 전이며 최종 시험셋이 아니다.",
+  "scope": "마이크/STT를 실행하지 않는다. 새 음성 데이터나 고령자 성능 평가로 해석하지 않는다. 메뉴 불명확 4건과 복합 요청 8건은 모델 정답률 채점 제외.",
+  "case_count": 56,
+  "cases": [
+    {
+      "id": "A01",
+      "category": "승인 줄임말",
+      "text": "아아 한잔주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "add",
+        "items": [
+          {
+            "menu_id": "americano",
+            "quantity": 1,
+            "temperature": "ice",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": false,
+        "question_required": false
+      },
+      "must_block": false,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "A02",
+      "category": "승인 줄임말",
+      "text": "아아 두 잔 주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "add",
+        "items": [
+          {
+            "menu_id": "americano",
+            "quantity": 2,
+            "temperature": "ice",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": false,
+        "question_required": false
+      },
+      "must_block": false,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "A03",
+      "category": "승인 줄임말",
+      "text": "뜨아 하나 주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "add",
+        "items": [
+          {
+            "menu_id": "americano",
+            "quantity": 1,
+            "temperature": "hot",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": false,
+        "question_required": false
+      },
+      "must_block": false,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "A04",
+      "category": "승인 줄임말",
+      "text": "따아 두 잔 주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "add",
+        "items": [
+          {
+            "menu_id": "americano",
+            "quantity": 2,
+            "temperature": "hot",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": false,
+        "question_required": false
+      },
+      "must_block": false,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "A05",
+      "category": "승인 줄임말",
+      "text": "아바라 하나 주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "add",
+        "items": [
+          {
+            "menu_id": "vanilla_latte",
+            "quantity": 1,
+            "temperature": "ice",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": false,
+        "question_required": false
+      },
+      "must_block": false,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "A06",
+      "category": "승인 줄임말",
+      "text": "아바라 두 잔 주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "add",
+        "items": [
+          {
+            "menu_id": "vanilla_latte",
+            "quantity": 2,
+            "temperature": "ice",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": false,
+        "question_required": false
+      },
+      "must_block": false,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "A07",
+      "category": "승인 줄임말",
+      "text": "아아 주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "clarify",
+        "items": [
+          {
+            "menu_id": "americano",
+            "quantity": null,
+            "temperature": "ice",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": true,
+        "question_required": true
+      },
+      "must_block": true,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "A08",
+      "category": "승인 줄임말",
+      "text": "아바라 주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "clarify",
+        "items": [
+          {
+            "menu_id": "vanilla_latte",
+            "quantity": null,
+            "temperature": "ice",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": true,
+        "question_required": true
+      },
+      "must_block": true,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "N01",
+      "category": "일반·표기 표현",
+      "text": "아이스 아메리카노 한 잔 주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "add",
+        "items": [
+          {
+            "menu_id": "americano",
+            "quantity": 1,
+            "temperature": "ice",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": false,
+        "question_required": false
+      },
+      "must_block": false,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "N02",
+      "category": "일반·표기 표현",
+      "text": "따뜻한 아메리카노 두 잔 주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "add",
+        "items": [
+          {
+            "menu_id": "americano",
+            "quantity": 2,
+            "temperature": "hot",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": false,
+        "question_required": false
+      },
+      "must_block": false,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "N03",
+      "category": "일반·표기 표현",
+      "text": "차가운 카페라떼 한 잔 주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "add",
+        "items": [
+          {
+            "menu_id": "cafe_latte",
+            "quantity": 1,
+            "temperature": "ice",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": false,
+        "question_required": false
+      },
+      "must_block": false,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "N04",
+      "category": "일반·표기 표현",
+      "text": "카페라테 따뜻하게 두 잔 주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "add",
+        "items": [
+          {
+            "menu_id": "cafe_latte",
+            "quantity": 2,
+            "temperature": "hot",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": false,
+        "question_required": false
+      },
+      "must_block": false,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "N05",
+      "category": "일반·표기 표현",
+      "text": "아이스 바닐라라떼 세 잔 주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "add",
+        "items": [
+          {
+            "menu_id": "vanilla_latte",
+            "quantity": 3,
+            "temperature": "ice",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": false,
+        "question_required": false
+      },
+      "must_block": false,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "N06",
+      "category": "일반·표기 표현",
+      "text": "딸기 라떼 두 잔 주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "add",
+        "items": [
+          {
+            "menu_id": "strawberry_latte",
+            "quantity": 2,
+            "temperature": "ice",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": false,
+        "question_required": false
+      },
+      "must_block": false,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "N07",
+      "category": "일반·표기 표현",
+      "text": "망고 스무디 한 잔 주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "add",
+        "items": [
+          {
+            "menu_id": "mango_smoothie",
+            "quantity": 1,
+            "temperature": "ice",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": false,
+        "question_required": false
+      },
+      "must_block": false,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "N08",
+      "category": "일반·표기 표현",
+      "text": "따뜻한 카페모카 한 잔 휘핑 빼고 주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "add",
+        "items": [
+          {
+            "menu_id": "cafe_mocha",
+            "quantity": 1,
+            "temperature": "hot",
+            "size": "regular",
+            "whipped_cream": "none",
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": false,
+        "question_required": false
+      },
+      "must_block": false,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "F01",
+      "category": "필수 정보 누락",
+      "text": "아메리카노 주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "clarify",
+        "items": [
+          {
+            "menu_id": "americano",
+            "quantity": null,
+            "temperature": null,
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": true,
+        "question_required": true
+      },
+      "must_block": true,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "F02",
+      "category": "필수 정보 누락",
+      "text": "아이스 아메리카노 주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "clarify",
+        "items": [
+          {
+            "menu_id": "americano",
+            "quantity": null,
+            "temperature": "ice",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": true,
+        "question_required": true
+      },
+      "must_block": true,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "F03",
+      "category": "필수 정보 누락",
+      "text": "카페라떼 한 잔 주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "clarify",
+        "items": [
+          {
+            "menu_id": "cafe_latte",
+            "quantity": 1,
+            "temperature": null,
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": true,
+        "question_required": true
+      },
+      "must_block": true,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "F04",
+      "category": "필수 정보 누락",
+      "text": "바닐라라떼 두 잔 주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "clarify",
+        "items": [
+          {
+            "menu_id": "vanilla_latte",
+            "quantity": 2,
+            "temperature": null,
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": true,
+        "question_required": true
+      },
+      "must_block": true,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "F05",
+      "category": "필수 정보 누락",
+      "text": "딸기라떼 주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "clarify",
+        "items": [
+          {
+            "menu_id": "strawberry_latte",
+            "quantity": null,
+            "temperature": "ice",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": true,
+        "question_required": true
+      },
+      "must_block": true,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "F06",
+      "category": "필수 정보 누락",
+      "text": "망고스무디 주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "clarify",
+        "items": [
+          {
+            "menu_id": "mango_smoothie",
+            "quantity": null,
+            "temperature": "ice",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": true,
+        "question_required": true
+      },
+      "must_block": true,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "F07",
+      "category": "필수 정보 누락",
+      "text": "아이스 카페모카 한 잔 주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "clarify",
+        "items": [
+          {
+            "menu_id": "cafe_mocha",
+            "quantity": 1,
+            "temperature": "ice",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": true,
+        "question_required": true
+      },
+      "must_block": true,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "F08",
+      "category": "필수 정보 누락",
+      "text": "카페모카 한 잔 주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "clarify",
+        "items": [
+          {
+            "menu_id": "cafe_mocha",
+            "quantity": 1,
+            "temperature": null,
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": true,
+        "question_required": true
+      },
+      "must_block": true,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "Q01",
+      "category": "수량 표현",
+      "text": "딸기라떼 두대주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "clarify",
+        "items": [
+          {
+            "menu_id": "strawberry_latte",
+            "quantity": 2,
+            "temperature": "ice",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": true,
+        "question_required": true
+      },
+      "must_block": true,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "Q02",
+      "category": "수량 표현",
+      "text": "망고스무디 2병 주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "clarify",
+        "items": [
+          {
+            "menu_id": "mango_smoothie",
+            "quantity": 2,
+            "temperature": "ice",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": true,
+        "question_required": true
+      },
+      "must_block": true,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "Q03",
+      "category": "수량 표현",
+      "text": "딸기라떼 두 개 주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "add",
+        "items": [
+          {
+            "menu_id": "strawberry_latte",
+            "quantity": 2,
+            "temperature": "ice",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": false,
+        "question_required": false
+      },
+      "must_block": false,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "Q04",
+      "category": "수량 표현",
+      "text": "망고스무디 세 컵 주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "add",
+        "items": [
+          {
+            "menu_id": "mango_smoothie",
+            "quantity": 3,
+            "temperature": "ice",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": false,
+        "question_required": false
+      },
+      "must_block": false,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "Q05",
+      "category": "수량 표현",
+      "text": "아이스 아메리카노 2잔 주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "add",
+        "items": [
+          {
+            "menu_id": "americano",
+            "quantity": 2,
+            "temperature": "ice",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": false,
+        "question_required": false
+      },
+      "must_block": false,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "Q06",
+      "category": "수량 표현",
+      "text": "따뜻한 카페라떼 네 잔 주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "add",
+        "items": [
+          {
+            "menu_id": "cafe_latte",
+            "quantity": 4,
+            "temperature": "hot",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": false,
+        "question_required": false
+      },
+      "must_block": false,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "Q07",
+      "category": "수량 표현",
+      "text": "망고스무디 10잔 주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "clarify",
+        "items": [
+          {
+            "menu_id": "mango_smoothie",
+            "quantity": 10,
+            "temperature": "ice",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": true,
+        "question_required": true
+      },
+      "must_block": true,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "Q08",
+      "category": "수량 표현",
+      "text": "따뜻한 아메리카노 두 명 주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "clarify",
+        "items": [
+          {
+            "menu_id": "americano",
+            "quantity": 2,
+            "temperature": "hot",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": true,
+        "question_required": true
+      },
+      "must_block": true,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "M01",
+      "category": "메뉴 불명확",
+      "text": "밀크쉐이크 주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "clarify",
+        "items": [],
+        "needs_clarification": true,
+        "question_required": true
+      },
+      "must_block": true,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "M02",
+      "category": "메뉴 불명확",
+      "text": "라떼 한 잔 주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "clarify",
+        "items": [],
+        "needs_clarification": true,
+        "question_required": true
+      },
+      "must_block": true,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "M03",
+      "category": "메뉴 불명확",
+      "text": "스무디 두 잔 주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "clarify",
+        "items": [],
+        "needs_clarification": true,
+        "question_required": true
+      },
+      "must_block": true,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "M04",
+      "category": "메뉴 불명확",
+      "text": "아라 하나 주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "clarify",
+        "items": [],
+        "needs_clarification": true,
+        "question_required": true
+      },
+      "must_block": true,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "M05",
+      "category": "메뉴 불명확",
+      "text": "아메리카너 한 잔 주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": null,
+      "must_block": true,
+      "note": "원문만으로 정답 메뉴를 단정하지 않는다. 모델 정답률 채점은 제외하고 확인 없는 자동 수락 여부만 검사한다.",
+      "preserve_tokens": []
+    },
+    {
+      "id": "M06",
+      "category": "메뉴 불명확",
+      "text": "아이스 아메리카너 한 잔 주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": null,
+      "must_block": true,
+      "note": "원문만으로 정답 메뉴를 단정하지 않는다. 모델 정답률 채점은 제외하고 확인 없는 자동 수락 여부만 검사한다.",
+      "preserve_tokens": []
+    },
+    {
+      "id": "M07",
+      "category": "메뉴 불명확",
+      "text": "딸기한테 두 잔 주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": null,
+      "must_block": true,
+      "note": "원문만으로 정답 메뉴를 단정하지 않는다. 모델 정답률 채점은 제외하고 확인 없는 자동 수락 여부만 검사한다.",
+      "preserve_tokens": []
+    },
+    {
+      "id": "M08",
+      "category": "메뉴 불명확",
+      "text": "아봐라 한 잔 주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": null,
+      "must_block": true,
+      "note": "원문만으로 정답 메뉴를 단정하지 않는다. 모델 정답률 채점은 제외하고 확인 없는 자동 수락 여부만 검사한다.",
+      "preserve_tokens": []
+    },
+    {
+      "id": "C01",
+      "category": "이전 질문 문맥",
+      "text": "한 개요",
+      "context": "quantity",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "add",
+        "items": [
+          {
+            "menu_id": "americano",
+            "quantity": 1,
+            "temperature": "ice",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": false,
+        "question_required": false
+      },
+      "must_block": false,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "C02",
+      "category": "이전 질문 문맥",
+      "text": "둘이요",
+      "context": "quantity",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "add",
+        "items": [
+          {
+            "menu_id": "americano",
+            "quantity": 2,
+            "temperature": "ice",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": false,
+        "question_required": false
+      },
+      "must_block": false,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "C03",
+      "category": "이전 질문 문맥",
+      "text": "세 잔이요",
+      "context": "quantity",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "add",
+        "items": [
+          {
+            "menu_id": "americano",
+            "quantity": 3,
+            "temperature": "ice",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": false,
+        "question_required": false
+      },
+      "must_block": false,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "C04",
+      "category": "이전 질문 문맥",
+      "text": "차갑게",
+      "context": "temperature",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "clarify",
+        "items": [
+          {
+            "menu_id": "cafe_mocha",
+            "quantity": 1,
+            "temperature": "ice",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": true,
+        "question_required": true
+      },
+      "must_block": true,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "C05",
+      "category": "이전 질문 문맥",
+      "text": "따뜻하게",
+      "context": "temperature",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "clarify",
+        "items": [
+          {
+            "menu_id": "cafe_mocha",
+            "quantity": 1,
+            "temperature": "hot",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": true,
+        "question_required": true
+      },
+      "must_block": true,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "C06",
+      "category": "이전 질문 문맥",
+      "text": "빼줘",
+      "context": "whip",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "add",
+        "items": [
+          {
+            "menu_id": "cafe_mocha",
+            "quantity": 1,
+            "temperature": "ice",
+            "size": "regular",
+            "whipped_cream": "none",
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": false,
+        "question_required": false
+      },
+      "must_block": false,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "C07",
+      "category": "이전 질문 문맥",
+      "text": "많이",
+      "context": "whip",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "add",
+        "items": [
+          {
+            "menu_id": "cafe_mocha",
+            "quantity": 1,
+            "temperature": "ice",
+            "size": "regular",
+            "whipped_cream": "extra",
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": false,
+        "question_required": false
+      },
+      "must_block": false,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "C08",
+      "category": "이전 질문 문맥",
+      "text": "일반으로",
+      "context": "whip",
+      "source_kind": "constructed_text_development",
+      "expected_model": {
+        "intent": "add",
+        "items": [
+          {
+            "menu_id": "cafe_mocha",
+            "quantity": 1,
+            "temperature": "ice",
+            "size": "regular",
+            "whipped_cream": "normal",
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": false,
+        "question_required": false
+      },
+      "must_block": false,
+      "note": "",
+      "preserve_tokens": []
+    },
+    {
+      "id": "P01",
+      "category": "정정·취소·복합 요청 보존",
+      "text": "아아 하나 빼주고 아니 아바라 하나 추가해줘",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": null,
+      "must_block": true,
+      "note": "단일 추가 주문 검증 범위 밖. 주문 해석 정답률로 집계하지 않고 보존 및 자동 수락 차단만 검사한다.",
+      "preserve_tokens": [
+        "빼주고",
+        "아니",
+        "추가해줘"
+      ]
+    },
+    {
+      "id": "P02",
+      "category": "정정·취소·복합 요청 보존",
+      "text": "두 잔 말고 한 잔만 할게",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": null,
+      "must_block": true,
+      "note": "단일 추가 주문 검증 범위 밖. 주문 해석 정답률로 집계하지 않고 보존 및 자동 수락 차단만 검사한다.",
+      "preserve_tokens": [
+        "두 잔",
+        "말고",
+        "한 잔"
+      ]
+    },
+    {
+      "id": "P03",
+      "category": "정정·취소·복합 요청 보존",
+      "text": "아바라는 취소해줘",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": null,
+      "must_block": true,
+      "note": "단일 추가 주문 검증 범위 밖. 주문 해석 정답률로 집계하지 않고 보존 및 자동 수락 차단만 검사한다.",
+      "preserve_tokens": [
+        "취소해줘"
+      ]
+    },
+    {
+      "id": "P04",
+      "category": "정정·취소·복합 요청 보존",
+      "text": "다 취소해줘",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": null,
+      "must_block": true,
+      "note": "단일 추가 주문 검증 범위 밖. 주문 해석 정답률로 집계하지 않고 보존 및 자동 수락 차단만 검사한다.",
+      "preserve_tokens": [
+        "취소해줘"
+      ]
+    },
+    {
+      "id": "P05",
+      "category": "정정·취소·복합 요청 보존",
+      "text": "아메리카노 주지 마",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": null,
+      "must_block": true,
+      "note": "단일 추가 주문 검증 범위 밖. 주문 해석 정답률로 집계하지 않고 보존 및 자동 수락 차단만 검사한다.",
+      "preserve_tokens": [
+        "주지 마"
+      ]
+    },
+    {
+      "id": "P06",
+      "category": "정정·취소·복합 요청 보존",
+      "text": "아이스 아메리카노 한 잔 샷 추가해줘",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": null,
+      "must_block": true,
+      "note": "단일 추가 주문 검증 범위 밖. 주문 해석 정답률로 집계하지 않고 보존 및 자동 수락 차단만 검사한다.",
+      "preserve_tokens": [
+        "한 잔",
+        "샷",
+        "추가해줘"
+      ]
+    },
+    {
+      "id": "P07",
+      "category": "정정·취소·복합 요청 보존",
+      "text": "따뜻한 아메리카노 한 잔 얼음 두 개만 넣어줘",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": null,
+      "must_block": true,
+      "note": "단일 추가 주문 검증 범위 밖. 주문 해석 정답률로 집계하지 않고 보존 및 자동 수락 차단만 검사한다.",
+      "preserve_tokens": [
+        "따뜻한",
+        "한 잔",
+        "얼음 두 개"
+      ]
+    },
+    {
+      "id": "P08",
+      "category": "정정·취소·복합 요청 보존",
+      "text": "아아 두 잔이랑 아바라 한 잔 주세요",
+      "context": "none",
+      "source_kind": "constructed_text_development",
+      "expected_model": null,
+      "must_block": true,
+      "note": "단일 추가 주문 검증 범위 밖. 주문 해석 정답률로 집계하지 않고 보존 및 자동 수락 차단만 검사한다.",
+      "preserve_tokens": [
+        "두 잔",
+        "한 잔"
+      ]
+    }
+  ]
+}

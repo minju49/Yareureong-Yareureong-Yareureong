@@ -1,0 +1,60 @@
+{
+  "checks": {
+    "all_56_cases_present": true,
+    "all_sources_unchanged": true,
+    "all_raw_answers_preserved": true,
+    "all_payloads_exclude_gold": true,
+    "same_settings_except_text": true,
+    "actual_model_calls": 79,
+    "school_model_called": false
+  },
+  "invalid_responses": [
+    {
+      "id": "A04",
+      "branch": "A_original",
+      "called": true,
+      "status": "invalid_response",
+      "finish_reason": "length"
+    }
+  ],
+  "both_branches_api_json_ok_reference_subset": {
+    "cases": 43,
+    "A_correct": 8,
+    "B_correct": 12
+  },
+  "improvement_examples": [
+    {
+      "id": "A01",
+      "text": "아아 한잔주세요",
+      "reviewed_text": "아이스 아메리카노 한잔주세요",
+      "category": "승인 줄임말"
+    },
+    {
+      "id": "A02",
+      "text": "아아 두 잔 주세요",
+      "reviewed_text": "아이스 아메리카노 두 잔 주세요",
+      "category": "승인 줄임말"
+    },
+    {
+      "id": "A04",
+      "text": "따아 두 잔 주세요",
+      "reviewed_text": "따뜻한 아메리카노 두 잔 주세요",
+      "category": "승인 줄임말"
+    },
+    {
+      "id": "C04",
+      "text": "차갑게",
+      "reviewed_text": "확인 중인 카페모카, 1잔의 온도 답변: 차갑게",
+      "category": "이전 질문 문맥"
+    },
+    {
+      "id": "C05",
+      "text": "따뜻하게",
+      "reviewed_text": "확인 중인 카페모카, 1잔의 온도 답변: 따뜻하게",
+      "category": "이전 질문 문맥"
+    }
+  ],
+  "program_tests_passed": 89,
+  "windows_launcher_exit_code": 0,
+  "report_amendment": "추론/정답표를 바꾸지 않고 응답 잘림 1건과 정상 JSON 공통 부분집합 분석을 추가했다."
+}

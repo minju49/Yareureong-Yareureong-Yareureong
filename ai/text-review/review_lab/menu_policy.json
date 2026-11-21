@@ -1,0 +1,31 @@
+{
+  "version": "bom-text-review-0.3",
+  "quantity_policy": "ask_when_missing",
+  "quantity_min": 1,
+  "quantity_max": 9,
+  "size": "regular",
+  "whip_values": ["normal", "extra", "light", "none"],
+  "menus": [
+    {"id": "americano", "name": "아메리카노", "forms": ["아메리카노"], "temperatures": ["hot", "ice"], "ask_whip": false, "price": 3500},
+    {"id": "cafe_latte", "name": "카페라떼", "forms": ["카페라떼", "카페라테"], "temperatures": ["hot", "ice"], "ask_whip": false, "price": 4500},
+    {"id": "vanilla_latte", "name": "바닐라라떼", "forms": ["바닐라라떼", "바닐라라테"], "temperatures": ["hot", "ice"], "ask_whip": false, "price": 5000},
+    {"id": "strawberry_latte", "name": "딸기라떼", "forms": ["딸기라떼", "딸기라테"], "temperatures": ["ice"], "ask_whip": false, "price": 5500},
+    {"id": "mango_smoothie", "name": "망고스무디", "forms": ["망고스무디"], "temperatures": ["ice"], "ask_whip": false, "price": null},
+    {"id": "cafe_mocha", "name": "카페모카", "forms": ["카페모카"], "temperatures": ["hot", "ice"], "ask_whip": true, "price": null}
+  ],
+  "aliases": [
+    {"form": "아바라", "menu_id": "vanilla_latte", "temperature": "ice", "expanded": "아이스 바닐라라떼"},
+    {"form": "아아", "menu_id": "americano", "temperature": "ice", "expanded": "아이스 아메리카노"},
+    {"form": "뜨아", "menu_id": "americano", "temperature": "hot", "expanded": "따뜻한 아메리카노"},
+    {"form": "따아", "menu_id": "americano", "temperature": "hot", "expanded": "따뜻한 아메리카노"}
+  ],
+  "review": {
+    "minimum_similarity": 0.88,
+    "minimum_margin": 0.15,
+    "maximum_jamo_edits": 1,
+    "minimum_syllables": 4,
+    "candidate_floor": 0.60,
+    "note": "초기 실험용 보수적 기준. 자모 편집 유사도는 STT 신뢰도나 정답 확률이 아니다. 실제 녹음에서 별도 평가해야 한다."
+  },
+  "scope_note": "메뉴 표현 재점검 및 주문 필드 추출 실험. 장바구니 변경·결제·유료 옵션 요금 계산을 수행하지 않는다."
+}

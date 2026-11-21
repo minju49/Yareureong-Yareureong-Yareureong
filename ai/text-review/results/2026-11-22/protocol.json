@@ -1,0 +1,357 @@
+{
+  "version": "bom-review-batch-1.0",
+  "created_at": "2026-11-22T03:34:16.092647+09:00",
+  "profile_key": "home",
+  "profile": {
+    "name": "집 Docker Qwen 0.8B",
+    "base_url": "http://127.0.0.1:18080/v1",
+    "model": "Qwen/Qwen3.5-0.8B"
+  },
+  "model_info": {
+    "object": "list",
+    "data": [
+      {
+        "id": "Qwen/Qwen3.5-0.8B",
+        "object": "model",
+        "created": 1795286056,
+        "owned_by": "vllm",
+        "root": "Qwen/Qwen3.5-0.8B",
+        "parent": null,
+        "max_model_len": 4096,
+        "permission": [
+          {
+            "id": "modelperm-af091f981c3fef8c",
+            "object": "model_permission",
+            "created": 1795286056,
+            "allow_create_engine": false,
+            "allow_sampling": true,
+            "allow_logprobs": true,
+            "allow_search_indices": false,
+            "allow_view": true,
+            "allow_fine_tuning": false,
+            "organization": "*",
+            "group": null,
+            "is_blocking": false
+          }
+        ]
+      }
+    ]
+  },
+  "policy_version": "bom-text-review-0.3",
+  "contract_version": "qwen-order-fields-0.3-short",
+  "gate_version": "bom-order-gate-0.1",
+  "seed": 20261122,
+  "case_ids": [
+    "A06",
+    "Q03",
+    "C07",
+    "P08",
+    "P07",
+    "P01",
+    "P02",
+    "C05",
+    "A01",
+    "Q06",
+    "A07",
+    "N02",
+    "Q05",
+    "C08",
+    "F06",
+    "P06",
+    "F05",
+    "N01",
+    "F02",
+    "A08",
+    "M07",
+    "N06",
+    "F07",
+    "M06",
+    "N04",
+    "M03",
+    "C06",
+    "N05",
+    "P03",
+    "A05",
+    "C04",
+    "F03",
+    "Q07",
+    "M04",
+    "F01",
+    "M02",
+    "Q02",
+    "F04",
+    "F08",
+    "N07",
+    "C02",
+    "Q08",
+    "Q04",
+    "N03",
+    "A02",
+    "P04",
+    "P05",
+    "A04",
+    "A03",
+    "M08",
+    "C03",
+    "Q01",
+    "C01",
+    "N08",
+    "M01",
+    "M05"
+  ],
+  "dataset_sha256": "72a3e9073e05b869dcea9a652742ab74b5da9b9277ed8fbf03f491ce9f969aeb",
+  "annotation_status": "사용자와 정한 주문 정책에 따라 작성한 개발용 정답 초안. 팀원의 독립 검수 전이며 최종 시험셋이 아니다.",
+  "source_hashes": {
+    "run_batch.py": "baa9de2ea896e5aa1820288ff365e7884637fb50ff4522dec4d4cba62228a17b",
+    "review.py": "d0abd684ad30240ad85ef0429d361509ffe624da2350ad9451dc03fc0acdbb5f",
+    "qwen_client.py": "73e94dad3093250cfdf2cafa8b15f98cdc20353e80b0583b95167f51896a3387",
+    "order_gate.py": "5267d61d6c4c1029a504cfbc29b29c84c592d4843e1f80108630bdbe7951e88d",
+    "menu_policy.json": "d8852015a83f83bada1931cec64767490687361e912b85045bc793a04ec02125",
+    "run_review.py": "afbfa6ad5e55da769f433af62025be31d5226dfd682f75ccd5d5da3ac37ca4e9"
+  },
+  "prompt_sha256": "28f6822a27f282e76f9114364588525d5cb328a00e31f760bd0b654358b1a1f4",
+  "schema_sha256": "6dcc40952a908d2a348686dce591a4159d188e198000d1a3f261941516611e05",
+  "prompt": "Extract the Korean customer's order into the required JSON. `menu` is a catalog, NOT the order. Include only drinks requested in `text`.\nRead quantities literally: 한/하나=1, 두/둘=2, 세/셋=3. Unstated quantity is null, never 1.\nRead temperature literally: 아이스/차가운/차갑게 means ice; 따뜻한/따뜻하게/뜨거운 means hot. Unstated temperature is null, except an ice-only menu uses ice.\nAliases: 아아=americano ice; 뜨아/따아=americano hot; 아바라=vanilla_latte ice.\nsize is regular. whipped_cream is null unless explicitly selected: 많이=extra, 적게=light, 일반=normal, 빼기=none.\nFor a new order, if quantity or required temperature or required whip is missing, intent=clarify, needs_clarification=true; ask ONE short Korean question, quantity before temperature before whip.\nIf the number uses an uncertain drink unit such as 대/명/병, retain the number and ask to confirm cups. This is a unit question, not missing quantity.\nA complete new order has intent=add, needs_clarification=false, clarification_question=\"\".\nUse context only for the pending question, keeping explicitly known previous facts. Preserve correction/cancel intent. Unclear menu requires clarification.\ncustom_note contains only a special preparation request, otherwise \"\". Never copy the whole input there. Ice-piece counts are preparation notes, not drink quantity or temperature.",
+  "schema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "intent": {
+        "type": "string",
+        "enum": [
+          "add",
+          "update",
+          "remove",
+          "reset",
+          "confirm",
+          "clarify",
+          "help"
+        ]
+      },
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "menu_id": {
+              "type": "string",
+              "enum": [
+                "americano",
+                "cafe_latte",
+                "vanilla_latte",
+                "strawberry_latte",
+                "mango_smoothie",
+                "cafe_mocha"
+              ]
+            },
+            "quantity": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 1
+            },
+            "temperature": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "enum": [
+                "hot",
+                "ice",
+                null
+              ]
+            },
+            "size": {
+              "type": "string",
+              "enum": [
+                "regular"
+              ]
+            },
+            "whipped_cream": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "enum": [
+                "normal",
+                "extra",
+                "light",
+                "none",
+                null
+              ]
+            },
+            "custom_note": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "menu_id",
+            "quantity",
+            "temperature",
+            "size",
+            "whipped_cream",
+            "custom_note"
+          ]
+        }
+      },
+      "needs_clarification": {
+        "type": "boolean"
+      },
+      "clarification_question": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "intent",
+      "items",
+      "needs_clarification",
+      "clarification_question"
+    ]
+  },
+  "policy_snapshot": {
+    "version": "bom-text-review-0.3",
+    "quantity_policy": "ask_when_missing",
+    "quantity_min": 1,
+    "quantity_max": 9,
+    "size": "regular",
+    "whip_values": [
+      "normal",
+      "extra",
+      "light",
+      "none"
+    ],
+    "menus": [
+      {
+        "id": "americano",
+        "name": "아메리카노",
+        "forms": [
+          "아메리카노"
+        ],
+        "temperatures": [
+          "hot",
+          "ice"
+        ],
+        "ask_whip": false,
+        "price": 3500
+      },
+      {
+        "id": "cafe_latte",
+        "name": "카페라떼",
+        "forms": [
+          "카페라떼",
+          "카페라테"
+        ],
+        "temperatures": [
+          "hot",
+          "ice"
+        ],
+        "ask_whip": false,
+        "price": 4500
+      },
+      {
+        "id": "vanilla_latte",
+        "name": "바닐라라떼",
+        "forms": [
+          "바닐라라떼",
+          "바닐라라테"
+        ],
+        "temperatures": [
+          "hot",
+          "ice"
+        ],
+        "ask_whip": false,
+        "price": 5000
+      },
+      {
+        "id": "strawberry_latte",
+        "name": "딸기라떼",
+        "forms": [
+          "딸기라떼",
+          "딸기라테"
+        ],
+        "temperatures": [
+          "ice"
+        ],
+        "ask_whip": false,
+        "price": 5500
+      },
+      {
+        "id": "mango_smoothie",
+        "name": "망고스무디",
+        "forms": [
+          "망고스무디"
+        ],
+        "temperatures": [
+          "ice"
+        ],
+        "ask_whip": false,
+        "price": null
+      },
+      {
+        "id": "cafe_mocha",
+        "name": "카페모카",
+        "forms": [
+          "카페모카"
+        ],
+        "temperatures": [
+          "hot",
+          "ice"
+        ],
+        "ask_whip": true,
+        "price": null
+      }
+    ],
+    "aliases": [
+      {
+        "form": "아바라",
+        "menu_id": "vanilla_latte",
+        "temperature": "ice",
+        "expanded": "아이스 바닐라라떼"
+      },
+      {
+        "form": "아아",
+        "menu_id": "americano",
+        "temperature": "ice",
+        "expanded": "아이스 아메리카노"
+      },
+      {
+        "form": "뜨아",
+        "menu_id": "americano",
+        "temperature": "hot",
+        "expanded": "따뜻한 아메리카노"
+      },
+      {
+        "form": "따아",
+        "menu_id": "americano",
+        "temperature": "hot",
+        "expanded": "따뜻한 아메리카노"
+      }
+    ],
+    "review": {
+      "minimum_similarity": 0.88,
+      "minimum_margin": 0.15,
+      "maximum_jamo_edits": 1,
+      "minimum_syllables": 4,
+      "candidate_floor": 0.6,
+      "note": "초기 실험용 보수적 기준. 자모 편집 유사도는 STT 신뢰도나 정답 확률이 아니다. 실제 녹음에서 별도 평가해야 한다."
+    },
+    "scope_note": "메뉴 표현 재점검 및 주문 필드 추출 실험. 장바구니 변경·결제·유료 옵션 요금 계산을 수행하지 않는다."
+  },
+  "reference_answers_sent_to_model": false,
+  "temperature": 0,
+  "order_policy": "고정 seed로 문장 순서를 섞고, 변경 문장의 첫 호출을 A/B 번갈아 배치. 동일 입력은 실제 응답 하나를 공유.",
+  "environment": {
+    "os": "Windows-10-10.0.26300-SP0",
+    "python": "3.11.18",
+    "logical_cpu_count": 12,
+    "processor": "AMD64 Family 25 Model 97 Stepping 2, AuthenticAMD"
+  },
+  "limits": [
+    "개발용 문장과 정답 초안. 독립 평가/음성 시험/고령자 연구가 아니다.",
+    "통계적 유의성·반복 안정성·학교 9B 성능을 증명하지 않는다.",
+    "질문 문구의 의미는 검사하지 않는다. 슬롯/의도/질문 유무만 비교한다."
+  ],
+  "publication_note": "실험 당시 고정한 코드 해시와 조건이다. 공개본은 학교 URL을 환경 변수로 변경하고 실행 파일을 Python 선택 방식으로 조정했다. 집 모델의 프롬프트·메뉴·정답표·추론 설정은 그대로다. 원본 요청/응답·음성 로그는 로컬 보관한다."
+}
