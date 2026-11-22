@@ -1,0 +1,101 @@
+{
+  "model": "zipenhancer",
+  "blend": 0.25,
+  "cer_unit": "fraction",
+  "noise_groups": {
+    "대화소음": {
+      "utterances": 30,
+      "sources": 30,
+      "reference_chars": 615,
+      "off_errors": 83,
+      "on_errors": 79,
+      "off_cer": 0.13495934959349593,
+      "on_cer": 0.12845528455284552,
+      "delta_cer_pp": -0.6504065040650406,
+      "ci95_pp": [
+        -1.8908195808443857,
+        0.34784123617633667
+      ],
+      "improved": 6,
+      "unchanged": 21,
+      "worsened": 3,
+      "mean_model_seconds": 0.6464831833300801
+    },
+    "업소소음": {
+      "utterances": 30,
+      "sources": 30,
+      "reference_chars": 679,
+      "off_errors": 216,
+      "on_errors": 205,
+      "off_cer": 0.3181148748159057,
+      "on_cer": 0.3019145802650957,
+      "delta_cer_pp": -1.6200294550810015,
+      "ci95_pp": [
+        -4.390341333506544,
+        0.8292218310441145
+      ],
+      "improved": 9,
+      "unchanged": 13,
+      "worsened": 8,
+      "mean_model_seconds": 0.6771503866650164
+    },
+    "기타 카페 소음": {
+      "utterances": 30,
+      "sources": 30,
+      "reference_chars": 637,
+      "off_errors": 172,
+      "on_errors": 160,
+      "off_cer": 0.27001569858712715,
+      "on_cer": 0.25117739403453687,
+      "delta_cer_pp": -1.8838304552590266,
+      "ci95_pp": [
+        -3.906284691385435,
+        0.0
+      ],
+      "improved": 10,
+      "unchanged": 16,
+      "worsened": 4,
+      "mean_model_seconds": 0.5670847399858758
+    },
+    "전체": {
+      "utterances": 90,
+      "sources": 90,
+      "reference_chars": 1931,
+      "off_errors": 471,
+      "on_errors": 444,
+      "off_cer": 0.2439150699119627,
+      "on_cer": 0.22993267736923872,
+      "delta_cer_pp": -1.3982392542723978,
+      "ci95_pp": [
+        -2.6680879441464143,
+        -0.2797829225715722
+      ],
+      "improved": 25,
+      "unchanged": 50,
+      "worsened": 15,
+      "mean_model_seconds": 0.6302394366603241
+    }
+  },
+  "conversation_633": {
+    "utterances": 633,
+    "sources": 44,
+    "on_errors": 2046,
+    "reference_chars": 17165,
+    "off_errors": 2242,
+    "on_cer": 0.11919603845033498,
+    "off_cer": 0.13061462277891056,
+    "delta_cer_pp": -1.141858432857559,
+    "ci95_pp": [
+      -1.8853359147773279,
+      -0.46423594717780986
+    ]
+  },
+  "api_verification": {
+    "default_off": true,
+    "explicit_off_and_on": true,
+    "long_audio_length_preserved": true,
+    "invalid_wav_rejected": true,
+    "matching_previous_gpu_adapter_cases": 3,
+    "max_absolute_waveform_difference": 0.0
+  }
+}
