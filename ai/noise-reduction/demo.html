@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ko">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>봄카페 잡음 제거 비교</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f8f7f2;color:#172b25;font:1rem/1.55 'Malgun Gothic',system-ui,sans-serif}main{max-width:55rem;margin:auto;padding:clamp(1.25rem,5vw,3.5rem)}h1{font-size:clamp(1.65rem,5vw,2.6rem);line-height:1.2;margin:.3rem 0 1rem}h2{font-size:1.2rem;margin:0 0 .9rem}p{margin:.4rem 0 1.2rem}form,section{background:white;border:1px solid #d3dbd1;border-radius:.85rem;padding:1.15rem;margin:1rem 0}label{display:block;font-weight:bold;margin:.7rem 0 .35rem}select,input,button{font:inherit}select,input[type=file]{max-width:100%;padding:.55rem;border:1px solid #8a9d92;border-radius:.4rem;color:inherit;background:white}button{display:block;margin-top:1.1rem;background:#174e3a;color:white;border:0;border-radius:.45rem;padding:.65rem 1.1rem;min-height:48px}button:disabled{opacity:.6}small{color:#3f544a}.results{display:grid;gap:1rem;grid-template-columns:repeat(2,minmax(0,1fr))}audio{width:100%}.transcript{white-space:pre-wrap;overflow-wrap:anywhere}.error{color:#9b251a}[hidden]{display:none!important}@media(max-width:620px){.results{grid-template-columns:1fr}}
+</style></head>
+<body><main>
+<h1>봄카페 잡음 제거 비교</h1>
+<p>같은 WAV 파일을 원본과 선택한 처리로 비교합니다.</p>
+<form id="form">
+  <label for="wav">음성 파일</label><input id="wav" name="file" type="file" accept=".wav,audio/wav" required>
+  <label for="mode">처리 방식</label>
+  <select id="mode" name="mode">
+    <option value="off">OFF · 원본</option><option value="zipenhancer">ON · ZipEnhancer</option>
+    <option value="auto">AUTO · 입력 특징으로 선택 (실험)</option>
+    <option value="parallel">병렬 혼합 · ZipEnhancer + MossFormerGAN</option>
+    <option value="moss_to_zip">직렬 · MossFormerGAN → ZipEnhancer</option>
+    <option value="zip_to_moss">직렬 · ZipEnhancer → MossFormerGAN</option>
+    <option value="mossgan">ON · MossFormerGAN</option>
+  </select>
+  <button id="run">비교하기</button>
+</form>
+<p id="status" role="status"></p>
+<div id="result" hidden>
+  <p id="decision"></p>
+  <div class="results">
+    <section><h2>원본</h2><audio id="original" controls preload="metadata" aria-label="원본 음성"></audio><p id="originalText" class="transcript"></p></section>
+    <section><h2>처리 후</h2><audio id="processed" controls preload="metadata" aria-label="처리한 음성"></audio><p id="processedText" class="transcript"></p></section>
+  </div>
+</div>
+</main>
+<script>
+const byId = id => document.getElementById(id);
+let audioUrls = [];
+function setAudio(id, encoded) {
+  const bytes = Uint8Array.from(atob(encoded), character => character.charCodeAt(0));
+  const url = URL.createObjectURL(new Blob([bytes], {type:'audio/wav'}));
+  audioUrls.push(url);
+  byId(id).src = url;
+}
+byId('form').addEventListener('submit', async event => {
+  event.preventDefault();
+  byId('run').disabled = true;
+  byId('status').className = '';
+  byId('status').textContent = '같은 음성을 두 조건으로 비교하고 있습니다.';
+  byId('result').hidden = true;
+  for (const url of audioUrls) URL.revokeObjectURL(url);
+  audioUrls = [];
+  try {
+    const response = await fetch('/compare', {method:'POST', body:new FormData(event.currentTarget)});
+    const data = await response.json();
+    if (!response.ok) throw new Error(typeof data.detail === 'string' ? data.detail : '파일이나 처리 설정을 확인해주세요.');
+    setAudio('original', data.off_wav);
+    setAudio('processed', data.processed_wav);
+    const decisions = {digital_silence:'디지털 무음',outside_evaluated_duration:'평가한 길이 범위 밖',experimental_energy_ratio:'프레임 에너지 비율'};
+    const reason = decisions[data.decision.reason];
+    byId('decision').textContent = `실제 적용 ${data.selected} · 음성 처리 ${data.processing_seconds.toFixed(3)}초${reason ? ` · 선택 기준 ${reason}` : ''}`;
+    byId('originalText').textContent = data.stt ? (data.stt[0].text || '(인식 결과 없음)') : 'SenseVoice를 설정하면 인식 문장을 표시합니다.';
+    byId('processedText').textContent = data.stt ? (data.stt[1].text || '(인식 결과 없음)') : '';
+    byId('status').textContent = '비교를 완료했습니다.';
+    byId('result').hidden = false;
+  } catch (error) {
+    byId('status').className = 'error';
+    byId('status').textContent = error.message;
+  } finally {
+    byId('run').disabled = false;
+  }
+});
+</script></body></html>

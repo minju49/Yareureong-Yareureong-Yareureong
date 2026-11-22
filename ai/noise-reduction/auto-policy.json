@@ -1,0 +1,11 @@
+{
+  "modes": ["off", "zipenhancer", "mossgan", "parallel", "moss_to_zip", "zip_to_moss"],
+  "tree": {
+    "feature": 1,
+    "threshold": 0.1719043031334877,
+    "left": {"feature": 1, "threshold": 0.10013702884316444, "left": {"mode": "zipenhancer"}, "right": {"mode": "moss_to_zip"}},
+    "right": {"mode": "zip_to_moss"}
+  },
+  "training_utterances": 100,
+  "objective": "estimated CER + 0.001 × audio-processing seconds"
+}

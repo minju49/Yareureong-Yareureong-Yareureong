@@ -1,0 +1,3 @@
+-r requirements.txt
+clearvoice==0.1.2
+PyYAML==6.0.2

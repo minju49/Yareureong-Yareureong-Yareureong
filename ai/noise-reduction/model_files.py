@@ -26,10 +26,31 @@ def verify():
 
 
 if __name__ == '__main__':
+    import argparse
     from modelscope.hub.file_download import model_file_download
 
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--ensemble', action='store_true')
+    args = parser.parse_args()
     MODEL_DIR.mkdir(parents=True, exist_ok=True)
     for name in FILES:
         model_file_download(REPO, name, revision='master', local_dir=str(MODEL_DIR))
     verify()
     print(f'SHA-256 검증 완료 ({ARTIFACT_REVISION}): {MODEL_DIR}')
+    if args.ensemble:
+        from shutil import copyfileobj
+        from urllib.request import urlopen
+        from ensemble import MOSS_FILE, MOSS_URL, moss_verified
+
+        if not moss_verified(MOSS_FILE):
+            MOSS_FILE.parent.mkdir(parents=True, exist_ok=True)
+            temporary = MOSS_FILE.with_suffix('.part')
+            try:
+                with urlopen(MOSS_URL, timeout=90) as source, temporary.open('wb') as output:
+                    copyfileobj(source, output)
+                if not moss_verified(temporary):
+                    raise ValueError('MossFormerGAN SHA-256 불일치')
+                temporary.replace(MOSS_FILE)
+            finally:
+                temporary.unlink(missing_ok=True)
+        print(f'MossFormerGAN SHA-256 검증 완료: {MOSS_FILE}')
