@@ -14,7 +14,8 @@ from threading import Lock
 import numpy as np
 import soundfile as sf
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
-from fastapi.responses import FileResponse, Response
+from fastapi.responses import FileResponse, RedirectResponse, Response
+from fastapi.staticfiles import StaticFiles
 from scipy.signal import resample_poly
 from starlette.concurrency import run_in_threadpool
 
@@ -30,6 +31,19 @@ async def lifespan(app):
 
 
 app = FastAPI(title='봄카페 잡음 제거 조합 비교', lifespan=lifespan)
+SITE_ROOT = ROOT.parent.parent
+app.mount('/kiosk/assets', StaticFiles(directory=SITE_ROOT/'assets'), name='kiosk-assets')
+
+
+@app.get('/kiosk', include_in_schema=False)
+def kiosk_redirect():
+    return RedirectResponse('/kiosk/')
+
+
+@app.get('/kiosk/', include_in_schema=False)
+def kiosk():
+    return FileResponse(SITE_ROOT/'index.html')
+
 
 
 @app.get('/')
@@ -112,13 +126,13 @@ async def denoise(file: UploadFile = File(...), enabled: bool = Form(False), mod
     return await run_in_threadpool(process_wav, blob, ('zipenhancer' if enabled else 'off') if mode is None else mode)
 
 
-def transcripts(x, y):
+def transcripts(*waves):
     model_dir = os.getenv('ZIP_STT_MODEL_DIR')
     if not model_dir:
         return None
     python = os.getenv('ZIP_STT_PYTHON', sys.executable)
     directory = Path(model_dir).resolve()
-    payload = json.dumps([base64.b64encode(a.astype('<f4').tobytes()).decode('ascii') for a in (x,y)])
+    payload = json.dumps([base64.b64encode(a.astype('<f4').tobytes()).decode('ascii') for a in waves])
     try:
         result = subprocess.run([python,'-X','utf8',str(ROOT/'stt_worker.py'),str(directory)],
                                 cwd=directory.parent, input=payload, capture_output=True, encoding='utf-8', timeout=60, check=True)
@@ -139,3 +153,20 @@ def compare_wav(blob, mode):
 async def compare(file: UploadFile = File(...), mode: str = Form('off')):
     blob = await read_upload(file)
     return await run_in_threadpool(compare_wav, blob, mode)
+
+
+def recognize_speech(blob, mode):
+    if not os.getenv('ZIP_STT_MODEL_DIR'):
+        raise HTTPException(503, '음성 인식 모델 폴더를 지정한 뒤 서버를 다시 실행해주세요.')
+    x = decode(blob)
+    y, selected, details, elapsed = process(x, mode)
+    # Only the waveform selected by the kiosk setting is sent to SenseVoice.
+    recognition, = transcripts(y)
+    return dict(mode=mode, selected=selected, decision=details, processing_seconds=elapsed,
+                text=recognition['text'], stt_seconds=recognition['seconds'])
+
+
+@app.post('/kiosk/api/speech')
+async def speech(file: UploadFile = File(...), mode: str = Form('off')):
+    blob = await read_upload(file)
+    return await run_in_threadpool(recognize_speech, blob, mode)

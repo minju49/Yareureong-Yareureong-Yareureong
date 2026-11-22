@@ -1,5 +1,7 @@
 # Yareureong-Yareureong-Yareureong
 
+봄카페 화면에서 마이크 녹음, 잡음 제거 모드와 SenseVoiceSmall을 사용하려면 [로컬 음성 키오스크 실행 방법](ai/noise-reduction/README.md#봄카페-웹에서-사용하기)을 참고하세요.
+
 ## 고령자를 위한 LLM 기반 대화형 음성 주문 키오스크
 
 고령 사용자의 키오스크 이용 편의성을 높이기 위해  
