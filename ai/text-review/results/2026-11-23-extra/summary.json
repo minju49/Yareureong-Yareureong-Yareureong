@@ -1,0 +1,313 @@
+{
+  "component_repeat_04": {
+    "version": "bom-component-repeat-0.1",
+    "completed_case_repetitions": 72,
+    "planned_repetitions": 3,
+    "distinct_development_cases": 24,
+    "new_independent_samples": false,
+    "school_tested": false,
+    "groups": {
+      "승인 줄임말": {
+        "distinct_cases": 8,
+        "response_observations": 24,
+        "raw": 3,
+        "lexical": 12,
+        "full": 12
+      },
+      "메뉴 표기 정리": {
+        "distinct_cases": 8,
+        "response_observations": 24,
+        "raw": 12,
+        "lexical": 12,
+        "full": 12
+      },
+      "짧은 문맥 답변": {
+        "distinct_cases": 8,
+        "response_observations": 24,
+        "raw": 0,
+        "lexical": 0,
+        "full": 6
+      }
+    },
+    "arms": {
+      "raw": {
+        "api_json_ok": 69,
+        "reference_correct": 15,
+        "denominator": 72,
+        "actual_model_calls": 51,
+        "shared_responses": 21,
+        "gate": {
+          "blocked_required": 12,
+          "unavailable": 3,
+          "accepted_correct": 15,
+          "blocked_inconsistent": 42
+        },
+        "stability": {
+          "complete_cases": 24,
+          "all_repetitions_valid_json": 23,
+          "identical_parsed_json_all_repetitions": 23,
+          "reference_correct_all_repetitions": 5
+        }
+      },
+      "lexical": {
+        "api_json_ok": 72,
+        "reference_correct": 24,
+        "denominator": 72,
+        "actual_model_calls": 35,
+        "shared_responses": 37,
+        "gate": {
+          "blocked_required": 12,
+          "accepted_correct": 24,
+          "blocked_inconsistent": 36
+        },
+        "stability": {
+          "complete_cases": 24,
+          "all_repetitions_valid_json": 24,
+          "identical_parsed_json_all_repetitions": 24,
+          "reference_correct_all_repetitions": 8
+        }
+      },
+      "full": {
+        "api_json_ok": 72,
+        "reference_correct": 30,
+        "denominator": 72,
+        "actual_model_calls": 43,
+        "shared_responses": 29,
+        "gate": {
+          "blocked_required": 12,
+          "accepted_correct": 24,
+          "blocked_inconsistent": 36
+        },
+        "stability": {
+          "complete_cases": 24,
+          "all_repetitions_valid_json": 24,
+          "identical_parsed_json_all_repetitions": 24,
+          "reference_correct_all_repetitions": 10
+        }
+      }
+    },
+    "actual_model_calls": 129,
+    "limitations": [
+      "이미 사용한 개발 문장 24개의 반복 점검이며 독립 시험셋이 아니다.",
+      "정답은 팀원의 독립 검수 전인 초안이다. 질문의 실제 의미·친절함은 별도 확인해야 한다.",
+      "같은 문맥을 모든 조건에 제공한다. 문맥 유무 실험이 아니라 문맥을 문장에 명시적으로 보강하는 효과를 비교한다.",
+      "온도 0에서도 반복 응답의 안정성과 정답 일치는 서로 다른 지표다.",
+      "추가 확인 중 CPU 음성 작업이 병행될 수 있어 이 실행의 시간은 단독 속도 벤치마크가 아니다."
+    ],
+    "all_planned_completed": true
+  },
+  "synthetic_audio_04": {
+    "review_policy": "bom-text-review-0.4",
+    "distinct_synthesized_texts": 8,
+    "wav_conditions_completed": 16,
+    "human_recordings": 0,
+    "school_tested": false,
+    "actual_qwen_calls": 30,
+    "source": "새로 생성한 MeloTTS 문장 8개 × 원음/-12dB. 같은 문장을 변형한 연결 점검이며 독립 사람 표본이 아님.",
+    "groups": {
+      "base": {
+        "conditions": 8,
+        "reference_chars": 67,
+        "character_errors": 2,
+        "synthetic_only_cer": 0.029850746268656716,
+        "stt_inference_median_ms": 48.043,
+        "arms": {
+          "A_original": {
+            "api_json_ok": 8,
+            "pipeline_reference_correct": 0,
+            "gate_counts": {
+              "accepted_correct": 0,
+              "unsafe_accept": 0,
+              "blocked_required": 2,
+              "blocked_inconsistent": 6,
+              "unnecessary_block": 0,
+              "unavailable": 0
+            }
+          },
+          "B_reviewed": {
+            "api_json_ok": 8,
+            "pipeline_reference_correct": 1,
+            "gate_counts": {
+              "accepted_correct": 0,
+              "unsafe_accept": 0,
+              "blocked_required": 2,
+              "blocked_inconsistent": 6,
+              "unnecessary_block": 0,
+              "unavailable": 0
+            }
+          }
+        }
+      },
+      "quiet": {
+        "conditions": 8,
+        "reference_chars": 67,
+        "character_errors": 2,
+        "synthetic_only_cer": 0.029850746268656716,
+        "stt_inference_median_ms": 45.718,
+        "arms": {
+          "A_original": {
+            "api_json_ok": 8,
+            "pipeline_reference_correct": 0,
+            "gate_counts": {
+              "accepted_correct": 0,
+              "unsafe_accept": 0,
+              "blocked_required": 2,
+              "blocked_inconsistent": 6,
+              "unnecessary_block": 0,
+              "unavailable": 0
+            }
+          },
+          "B_reviewed": {
+            "api_json_ok": 8,
+            "pipeline_reference_correct": 1,
+            "gate_counts": {
+              "accepted_correct": 0,
+              "unsafe_accept": 0,
+              "blocked_required": 2,
+              "blocked_inconsistent": 6,
+              "unnecessary_block": 0,
+              "unavailable": 0
+            }
+          }
+        }
+      }
+    },
+    "all_conditions_completed": true,
+    "stt_text_equal_across_volume_pairs": 8
+  },
+  "synthetic_audio_05": {
+    "review_policy": "bom-text-review-0.5",
+    "distinct_synthesized_texts": 8,
+    "wav_conditions_completed": 16,
+    "human_recordings": 0,
+    "school_tested": false,
+    "actual_qwen_calls": 30,
+    "source": "새로 생성한 MeloTTS 문장 8개 × 원음/-12dB. 같은 문장을 변형한 연결 점검이며 독립 사람 표본이 아님.",
+    "groups": {
+      "base": {
+        "conditions": 8,
+        "reference_chars": 67,
+        "character_errors": 2,
+        "synthetic_only_cer": 0.029850746268656716,
+        "stt_inference_median_ms": 48.043,
+        "arms": {
+          "A_original": {
+            "api_json_ok": 8,
+            "pipeline_reference_correct": 0,
+            "gate_counts": {
+              "accepted_correct": 0,
+              "unsafe_accept": 0,
+              "blocked_required": 2,
+              "blocked_inconsistent": 6,
+              "unnecessary_block": 0,
+              "unavailable": 0
+            }
+          },
+          "B_reviewed": {
+            "api_json_ok": 8,
+            "pipeline_reference_correct": 1,
+            "gate_counts": {
+              "accepted_correct": 0,
+              "unsafe_accept": 0,
+              "blocked_required": 2,
+              "blocked_inconsistent": 6,
+              "unnecessary_block": 0,
+              "unavailable": 0
+            }
+          }
+        }
+      },
+      "quiet": {
+        "conditions": 8,
+        "reference_chars": 67,
+        "character_errors": 2,
+        "synthetic_only_cer": 0.029850746268656716,
+        "stt_inference_median_ms": 45.718,
+        "arms": {
+          "A_original": {
+            "api_json_ok": 8,
+            "pipeline_reference_correct": 0,
+            "gate_counts": {
+              "accepted_correct": 0,
+              "unsafe_accept": 0,
+              "blocked_required": 2,
+              "blocked_inconsistent": 6,
+              "unnecessary_block": 0,
+              "unavailable": 0
+            }
+          },
+          "B_reviewed": {
+            "api_json_ok": 8,
+            "pipeline_reference_correct": 1,
+            "gate_counts": {
+              "accepted_correct": 0,
+              "unsafe_accept": 0,
+              "blocked_required": 2,
+              "blocked_inconsistent": 6,
+              "unnecessary_block": 0,
+              "unavailable": 0
+            }
+          }
+        }
+      }
+    },
+    "all_conditions_completed": true,
+    "stt_text_equal_across_volume_pairs": 8
+  },
+  "spacing_regression": {
+    "new_policy": "bom-text-review-0.5",
+    "new_qwen_calls": 0,
+    "results": {
+      "development56": {
+        "cases": 56,
+        "changed_request_or_review_decisions": []
+      },
+      "historical43": {
+        "cases": 43,
+        "changed_request_or_review_decisions": [
+          "H032"
+        ]
+      }
+    }
+  },
+  "spacing_timing": {
+    "policy": "bom-text-review-0.5",
+    "cases": 56,
+    "passes": 100,
+    "timing_observations": 5600,
+    "new_voice_samples": 0,
+    "new_model_calls": 0,
+    "first_spaced_option_call_ms": 8.135,
+    "median_ms": 0.089,
+    "p95_ms": 0.385,
+    "max_ms": 1.089,
+    "scope": "동일한 개발 문장 반복으로 함수 자체 시간만 측정. Qwen 요청 제외, 다른 작업 부하 가능."
+  },
+  "changed_historical_case_05": {
+    "policy": "bom-text-review-0.5",
+    "id": "H032",
+    "new_actual_qwen_calls": 2,
+    "source_file_sha256": "cf705e6c3e9793c0228fa3545e45f8f3790565d92de247e54deffb5ccd3cc29c",
+    "scope": "공백 보정으로 문장이 달라진 기존 사례 한 건의 추가 확인. 전체43개를 새로 측정한 것이 아님.",
+    "decisions": {
+      "A_original": {
+        "status": "invalid_response",
+        "gate": "unavailable",
+        "gate_score": "unavailable"
+      },
+      "B_reviewed": {
+        "status": "ok",
+        "gate": "hold",
+        "gate_score": "blocked_required"
+      }
+    }
+  },
+  "new_actual_qwen_calls": 191,
+  "new_melotts_synthesis_calls": 8,
+  "new_sensevoice_calls": 16,
+  "new_human_recordings": 0,
+  "school_model_tested": false,
+  "raw_responses_preserved": true,
+  "reference_answers_not_sent": true,
+  "note": "기존 모델·개발 자료의 추가 점검. 독립 음성 시험이나 전체 주문 완료율 평가가 아님."
+}

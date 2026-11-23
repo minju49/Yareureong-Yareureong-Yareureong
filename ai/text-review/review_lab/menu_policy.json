@@ -1,5 +1,5 @@
 {
-  "version": "bom-text-review-0.4",
+  "version": "bom-text-review-0.5",
   "quantity_policy": "ask_when_missing",
   "quantity_min": 1,
   "quantity_max": 9,

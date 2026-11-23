@@ -67,7 +67,9 @@ set "BOM_SCHOOL_QWEN_BASE_URL=http://YOUR_SCHOOL_HOST:PORT/ollama/v1"
 
 ## 오늘 확인한 결과
 
-현행 보정 0.4와 검증기 0.2를 기존 집 모델에서 실행했다. [2026-11-23 결과와 한계](results/2026-11-23/README.md)에 근거를 정리했다. [이전 0.3 결과](results/2026-11-22/README.md)는 별도로 보존한다.
+현재 보정은 0.5다. 실제 합성음의 STT에서 발견한 등록 옵션 단어 내부 공백을 정리하도록 보완했다. [추가 실험과 보완 결과](results/2026-11-23-extra/README.md)를 참고한다.
+
+보정 0.4와 검증기 0.2를 기존 집 모델에서 실행한 결과도 보존했다. [2026-11-23 결과와 한계](results/2026-11-23/README.md)에 근거를 정리했다. [이전 0.3 결과](results/2026-11-22/README.md)는 별도로 보존한다.
 
 - 개발 텍스트 56개: 핵심 슬롯 83/128 → 93/128 일치. 의도·질문까지 전체 조건은 8/44 → 13/44 일치.
 - 예전 실제 STT 문장 43개: 보이는 문장만으로 정답 초안을 정할 수 있는 18개에서 전체 조건 1/18 → 4/18 일치. 원래 음성·직전 문맥이 없는 항목의 뜻을 추측해 채점하지 않았다.
@@ -91,11 +93,13 @@ A 원문과 B 재점검문에 같은 모델·프롬프트·메뉴·문맥·생�
 
 | 위치 | 역할 |
 |---|---|
+| `review_lab/option_spacing.py` | 등록된 온도·옵션·정정 표현의 음절 사이 공백 정리 |
 | `review_lab/review.py` | 문장 정규화, 메뉴 후보 비교, 명시적 문맥 보강 |
 | `review_lab/qwen_client.py` | 실제 Qwen 요청과 원본 응답 보관 |
 | `review_lab/order_gate.py` | 단일 추가 주문의 제한된 필드 검증 |
 | `review_lab/run_review.py` | 한 문장씩 확인하는 실험 |
 | `review_lab/run_batch.py` | 고정 문장·조건의 자동 비교 및 기록 |
+| `review_lab/run_component_check.py` | 기존 개발24문장을 3조건·3회 반복하는 기능별 비교 |
 | `review_lab/replay_gate.py` | 저장된 모델 응답을 바꾸거나 다시 호출하지 않고 검증기만 재점검 |
 | `review_lab/freeze_reference.py` | 사용자가 내보낸 검수 기록을 확인하고 개발 정답표 고정 |
 | `review_lab/batch_cases.json` | 개발용 문장과 정답 초안 |

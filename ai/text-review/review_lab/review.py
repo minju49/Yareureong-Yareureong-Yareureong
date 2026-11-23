@@ -12,6 +12,7 @@ import json
 import re
 import time
 import unicodedata
+from option_spacing import repair_option_spacing
 
 ROOT = Path(__file__).resolve().parent
 POLICY = json.loads((ROOT / 'menu_policy.json').read_text(encoding='utf-8'))
@@ -192,7 +193,8 @@ def review_transcript(text, context=None):
     if not isinstance(text, str) or not text.strip() or len(text) > 2000:
         raise ValueError('비어 있지 않은 2,000자 이내 문장을 입력해주세요.')
     raw = text
-    text = unicodedata.normalize('NFC', text)
+    unicode_text = unicodedata.normalize('NFC', text)
+    text, option_edits = repair_option_spacing(unicode_text)
     mentions = exact_mentions(text)
     protected_action = bool(ACTION.search(text))
     has_unconfigured = bool(UNCONFIGURED.search(text))
@@ -244,9 +246,12 @@ def review_transcript(text, context=None):
     if has_unconfigured: notes.append('사전에 없는 메뉴/미확정 추가 옵션 표현 포함. 판매 가능·가격을 추정하지 않음.')
     if unknown_alias: notes.append('미등록 짧은 표현. 임의 별칭 해석 금지.')
     if generic_menu: notes.append('메뉴 종류를 특정할 수 없어 종류 확인이 필요함.')
-    return {'version': POLICY['version'], 'original_text': raw, 'unicode_normalized': raw != text,
+    for edit in edits:
+        edit['coordinate_frame'] = 'option_spacing_normalized_text'
+    return {'version': POLICY['version'], 'original_text': raw, 'unicode_normalized': raw != unicode_text,
+            'matching_text': text,
             'lexical_text': lexical_text, 'reviewed_text': output,
-            'context': copy.deepcopy(context or {}), 'changes': sorted(edits, key=lambda e: e['start']),
+            'context': copy.deepcopy(context or {}), 'changes': option_edits + sorted(edits, key=lambda e: e['start']),
             'candidates': sorted(selected, key=lambda p: p['start']), 'context_expansion': context_change,
             'needs_review': unknown_alias or generic_menu or has_unconfigured or any(not p['automatic'] for p in selected),
             'protected_action': protected_action, 'notes': notes,

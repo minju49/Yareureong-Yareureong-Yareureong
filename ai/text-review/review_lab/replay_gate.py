@@ -50,7 +50,7 @@ def main(argv=None):
     out = args.output_root.resolve() / (datetime.now().strftime('%Y%m%d-%H%M%S') + '-' + uuid.uuid4().hex[:6])
     out.mkdir(parents=True)
     (out / 'source').mkdir()
-    for name in ('order_gate.py', 'review.py', 'menu_policy.json', 'replay_gate.py', 'run_batch.py'):
+    for name in ('order_gate.py', 'review.py', 'menu_policy.json', 'replay_gate.py', 'run_batch.py', 'option_spacing.py'):
         shutil.copy2(Path(__file__).with_name(name), out / 'source' / name)
     records = []
     for path in paths:
