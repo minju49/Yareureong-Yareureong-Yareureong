@@ -27,6 +27,8 @@ Python 3.11 이상과 실행 중인 Qwen 서버가 필요하다. 문장 처리 �
 
 Windows에서는 다음 파일을 실행한다.
 
+학교에서 9B를 비교할 때는 [학교 실행 안내](학교실험_먼저읽기.txt)를 읽고 `1_학교연결점검.cmd` → `2_학교56문장비교.cmd` 순서로 실행한다. 학교용 ZIP은 Python을 동봉하며 Git 소스에는 실행 환경이 포함되지 않는다.
+
 - **6_문장재점검실험.cmd**: 문장을 하나씩 입력한다.
 - **7_자동비교실험.cmd**: 개발용 56문장을 일괄 비교한다.
 
@@ -59,7 +61,13 @@ set "BOM_SCHOOL_QWEN_BASE_URL=http://YOUR_SCHOOL_HOST:PORT/ollama/v1"
 
 학교 모델 이름은 `qwen3.5:9b-q4_K_M`이다. 주소를 지정하지 않으면 요청 전에 안내하고 중단한다. 학교 API 연결과 현재 JSON 요청 형식 지원 여부는 별도 확인 대상이다.
 
+학교 프로필은 Ollama 네이티브 `/api/tags`와 `/api/chat`을 사용한다. `/v1`로 끝나는 설정도 네이티브 기본 주소로 정리한다. JSON schema와 `stream=false`, `think=false`, `temperature=0`, `num_predict=1024`로 요청한다. 집 프로필의 프롬프트와 요청 설정은 유지했다. 서버가 실제로 받는지는 학교에서 별도로 확인해야 한다.
+
+요청 규격: [Ollama chat](https://docs.ollama.com/api/chat), [structured outputs](https://docs.ollama.com/capabilities/structured-outputs), [thinking](https://docs.ollama.com/capabilities/thinking).
+
 ## 오늘 확인한 결과
+
+2026-11-22 결과는 보정 0.3의 기록이다. 현행 0.4에서는 휘핑 답변 `일반으로/보통으로`와 수량 답변 `세 컵이요`의 문맥 연결을 보완했다. 수정 뒤 모델 정확도를 다시 측정한 것은 아니며, 학교 모델에서 별도로 비교한다.
 
 [2026-11-22 결과 요약](results/2026-11-22/README.md) · [문장별 CSV](results/2026-11-22/comparison.csv)
 

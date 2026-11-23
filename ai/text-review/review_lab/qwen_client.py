@@ -8,13 +8,15 @@ import os
 import time
 from urllib.request import Request, build_opener, ProxyHandler
 from urllib.error import HTTPError, URLError
+from urllib.parse import urlsplit, urlunsplit
 
 from review import POLICY
 
 PROFILES = {
     'home': {'name': '집 Docker Qwen 0.8B', 'base_url': 'http://127.0.0.1:18080/v1', 'model': 'Qwen/Qwen3.5-0.8B'},
-    'school': {'name': '학교 Qwen 9B — 학교에서 별도 확인 필요', 'base_url': os.environ.get('BOM_SCHOOL_QWEN_BASE_URL', '').strip(), 'model': 'qwen3.5:9b-q4_K_M'},
+    'school': {'name': '학교 Qwen 9B — 학교에서 별도 확인 필요', 'base_url': os.environ.get('BOM_SCHOOL_QWEN_BASE_URL', '').strip(), 'model': 'qwen3.5:9b-q4_K_M', 'api_style': 'ollama'},
 }
+TRANSPORT_VERSION = 'bom-qwen-transport-1.1'
 CONTRACT_VERSION = 'qwen-order-fields-0.3-short'
 ORDER_SCHEMA = {
     'type': 'object', 'additionalProperties': False,
@@ -50,9 +52,24 @@ custom_note contains only a special preparation request, otherwise "". Never cop
 OPENER = build_opener(ProxyHandler({}))
 
 
+def api_base(profile):
+    base = profile['base_url'].rstrip('/')
+    if profile.get('api_style') == 'ollama':
+        parsed = urlsplit(base)
+        if parsed.scheme not in ('http', 'https') or not parsed.netloc or parsed.query or parsed.fragment or parsed.username:
+            raise ValueError('학교 서버의 http/https 기본 주소를 확인해주세요.')
+        path = parsed.path.rstrip('/')
+        for suffix in ('/v1/models', '/api/tags', '/api/chat', '/v1', '/api'):
+            if path.endswith(suffix):
+                path = path[:-len(suffix)]
+                break
+        base = urlunsplit((parsed.scheme, parsed.netloc, path, '', ''))
+    return base
+
+
 def http(profile, method, path, body=None, timeout=90):
     encoded = json.dumps(body, ensure_ascii=False).encode('utf-8') if body is not None else None
-    req = Request(profile['base_url'].rstrip('/') + path, data=encoded, method=method,
+    req = Request(api_base(profile) + path, data=encoded, method=method,
                   headers={'Content-Type': 'application/json'})
     with OPENER.open(req, timeout=timeout) as response:
         return json.load(response)
@@ -61,8 +78,9 @@ def http(profile, method, path, body=None, timeout=90):
 def check_model(profile):
     if not profile.get('base_url'):
         raise ValueError('학교 서버 주소를 BOM_SCHOOL_QWEN_BASE_URL 환경 변수에 지정해주세요.')
-    raw = http(profile, 'GET', '/models', timeout=8)
-    names = [item.get('id') for item in raw.get('data', [])]
+    native = profile.get('api_style') == 'ollama'
+    raw = http(profile, 'GET', '/api/tags' if native else '/models', timeout=8)
+    names = [item.get('name') or item.get('model') for item in raw.get('models', [])] if native else [item.get('id') for item in raw.get('data', [])]
     if profile['model'] not in names:
         raise ValueError('요청한 모델이 목록에 없습니다: ' + profile['model'] + ' / ' + str(names))
     return raw
@@ -77,6 +95,9 @@ def payload(profile, text, context):
             'temperature': 0, 'max_tokens': 512,
             'response_format': {'type': 'json_schema', 'json_schema': {
                 'name': 'bom_order_fields', 'strict': True, 'schema': copy.deepcopy(ORDER_SCHEMA)}}}
+    if profile.get('api_style') == 'ollama':
+        return {'model': profile['model'], 'messages': body['messages'], 'format': copy.deepcopy(ORDER_SCHEMA),
+                'stream': False, 'think': False, 'options': {'temperature': 0, 'num_predict': 1024}}
     if profile['model'] == 'Qwen/Qwen3.5-0.8B':
         body['chat_template_kwargs'] = {'enable_thinking': False}
     return body
@@ -85,15 +106,29 @@ def payload(profile, text, context):
 def request_order(profile, text, context):
     started = time.perf_counter()
     body = payload(profile, text, context)
-    row = {'model_called': True, 'model': profile['model'], 'endpoint': profile['base_url'] + '/chat/completions',
+    native = profile.get('api_style') == 'ollama'
+    endpoint = '/api/chat' if native else '/chat/completions'
+    row = {'model_called': True, 'model': profile['model'], 'endpoint': api_base(profile) + endpoint,
+           'transport_version': TRANSPORT_VERSION,
            'input_text': text, 'request': body, 'api_ok': False, 'json_ok': False, 'status': 'error'}
     try:
-        raw = http(profile, 'POST', '/chat/completions', body)
+        raw = http(profile, 'POST', endpoint, body)
         row['raw_response'] = raw
-        choice = raw['choices'][0]
-        row['raw_content'] = choice['message'].get('content', '')
-        row['finish_reason'] = choice.get('finish_reason')
-        row['api_ok'] = bool(row['raw_content']) and row['finish_reason'] != 'length'
+        if native:
+            row['raw_content'] = raw.get('message', {}).get('content', '')
+            row['finish_reason'] = raw.get('done_reason')
+            row['returned_model'] = raw.get('model')
+            row['thinking_returned'] = bool(raw.get('message', {}).get('thinking'))
+            row['server_load_ms'] = raw.get('load_duration', 0) / 1e6
+            row['server_total_ms'] = raw.get('total_duration', 0) / 1e6
+            row['api_ok'] = bool(row['raw_content']) and raw.get('done') is True and row['finish_reason'] != 'length' and row['returned_model'] == profile['model']
+            if row['returned_model'] != profile['model']:
+                row['error'] = '요청한 모델과 실제 응답 모델이 다릅니다.'
+        else:
+            choice = raw['choices'][0]
+            row['raw_content'] = choice['message'].get('content', '')
+            row['finish_reason'] = choice.get('finish_reason')
+            row['api_ok'] = bool(row['raw_content']) and row['finish_reason'] != 'length'
         try:
             parsed = json.loads(row['raw_content'])
             if not isinstance(parsed, dict): raise ValueError('응답이 JSON 객체가 아닙니다.')

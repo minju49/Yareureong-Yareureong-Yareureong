@@ -1,0 +1,11 @@
+{
+  "bytes": 21164113,
+  "sha256": "175abc73089b4e32847af875c30df42f43e96813f3f78009c9821696897a8321",
+  "policy_version": "bom-text-review-0.4",
+  "relocated_python_prefix_correct": true,
+  "relocated_cmd_exit_code": 0,
+  "program_tests": 102,
+  "school_server_contacted": false,
+  "actual_school_model_verified": false,
+  "annotation_status": "draft_requires_independent_team_review"
+}

@@ -6,6 +6,7 @@ runtime/
 setup/
 records/
 .env
+school.local.json
 .env.*
 !.env.example
 *.log

@@ -167,13 +167,13 @@ def expand_context(text, context):
     field = context.get('awaiting')
     compact = re.sub(r'\s+', '', text)
     if field == 'quantity':
-        valid = bool(re.fullmatch(r'(?:[1-9]|한|하나|두|둘|세|셋|네|넷|다섯|여섯|일곱|여덟|아홉)(?:잔|개)?(?:만)?(?:이요|요)?[.!?]?', compact))
+        valid = bool(re.fullmatch(r'(?:[1-9]|한|하나|두|둘|세|셋|네|넷|다섯|여섯|일곱|여덟|아홉)(?:잔|개|컵)?(?:만)?(?:이요|요)?[.!?]?', compact))
         value = read_quantity(text, short_answer=True) if valid else None
     elif field == 'temperature':
         valid = bool(re.fullmatch(r'(?:차갑게|차가운걸로|아이스|따뜻하게|따뜻한걸로|뜨겁게|뜨거운걸로|핫)(?:요|해주세요|해줘)?[.!?]?', compact))
         value = temperature(text) if valid else None
     elif field == 'whipped_cream':
-        valid = bool(re.fullmatch(r'(?:휘핑)?(?:빼줘|빼주세요|빼기|없이|많이|듬뿍|적게|조금|일반|보통|기본|그대로)(?:요|해주세요|해줘)?[.!?]?', compact))
+        valid = bool(re.fullmatch(r'(?:휘핑)?(?:(?:빼줘|빼주세요|빼기|없이|많이|듬뿍|적게|조금|그대로)|(?:일반|보통|기본)(?:으로|로)?)(?:요|해주세요|해줘)?[.!?]?', compact))
         value = whip(text, short_answer=True) if valid else None
     else:
         value = None

@@ -22,11 +22,11 @@ from pathlib import Path
 import uuid
 
 from review import POLICY, review_transcript
-from qwen_client import PROFILES, CONTRACT_VERSION, ORDER_SCHEMA, PROMPT, check_model, request_order
+from qwen_client import PROFILES, CONTRACT_VERSION, TRANSPORT_VERSION, ORDER_SCHEMA, PROMPT, check_model, request_order
 from order_gate import GATE_VERSION, validate_order
 from run_review import CONTEXTS
 
-VERSION = 'bom-review-batch-1.0'
+VERSION = 'bom-review-batch-1.1'
 ROOT = Path(__file__).resolve().parent.parent
 DATASET = Path(__file__).with_name('batch_cases.json')
 KST = timezone(timedelta(hours=9))
@@ -238,6 +238,7 @@ def timing(values):
 
 def summarize(records, planned):
     scored = [r for r in records if r['case']['expected_model'] is not None]
+    common_valid = [r for r in scored if all(r['responses'][branch].get('status') == 'ok' for branch in BRANCHES)]
     groups = defaultdict(list)
     for record in records:
         groups[record['case']['category']].append(record)
@@ -262,6 +263,10 @@ def summarize(records, planned):
                         for attempt in record.get('previous_attempts', []) for response in attempt['responses'].values())
     return {'planned_cases': planned, 'completed_cases': len(records), 'all_cases_completed': len(records) == planned,
             'model_reference_scored': len(scored), 'model_reference_not_scored': len(records) - len(scored),
+            'common_valid_reference': {'cases': len(common_valid),
+                'A_correct': sum(r['responses']['A_original']['reference_score']['correct'] is True for r in common_valid),
+                'B_correct': sum(r['responses']['B_reviewed']['reference_score']['correct'] is True for r in common_valid)},
+            'format_recoveries_in_improved_cases': sum(outcome(r) == 'improved' and r['responses']['A_original'].get('status') != 'ok' for r in scored),
             'outcomes': dict(Counter(outcome(r) for r in records)), 'branches': branches,
             'groups': {name: {'cases': len(group), 'scored': sum(r['case']['expected_model'] is not None for r in group),
                              'outcomes': dict(Counter(outcome(r) for r in group))} for name, group in groups.items()},
@@ -310,8 +315,11 @@ def render_report(folder, protocol, records, audit, finished):
         '',
         f"진행: {summary['completed_cases']} / {summary['planned_cases']}개" + (' — 완료' if summary['all_cases_completed'] and finished else ' — 부분 결과'),
         f"실제 모델 호출: {summary['actual_calls']}회 / 원문과 같아 응답을 공유한 B: {b['shared_responses']}개",
+        f"정상 API·JSON 응답: 원문 {a['api_json_ok']}/{len(records)} / 재점검 {b['api_json_ok']}/{len(records)}. 실패도 분모에 포함함.",
         f"이 중 재시도 전 요청 {summary['calls_in_previous_attempts']}회는 원본을 보관하고 현재 점수/시간 통계에서는 제외함.",
         f"개발 정답표 필드 일치: 원문 {a['reference_correct']}/{a['reference_denominator']} → 재점검 {b['reference_correct']}/{b['reference_denominator']}",
+        f"두 경로 모두 정상 API·JSON인 {summary['common_valid_reference']['cases']}개: 원문 {summary['common_valid_reference']['A_correct']} → 재점검 {summary['common_valid_reference']['B_correct']}개 일치",
+        f"전체 개선 중 원문 형식 실패 해소를 포함한 사례: {summary['format_recoveries_in_improved_cases']}개. 전부 의미 해석 개선으로 보지 않음.",
         '※ 메뉴·수량·온도·사이즈·휘핑·메모·의도·질문 유무를 모두 비교. 질문 내용의 적절성은 채점하지 않음.',
         f"개선 {summary['outcomes'].get('improved',0)} / 악화 {summary['outcomes'].get('worsened',0)} / 둘 다 일치 {summary['outcomes'].get('both_correct',0)} / 둘 다 불일치 {summary['outcomes'].get('both_wrong',0)}",
         f"메뉴/복합 의도 정답 미확정으로 모델 채점에서 뺀 문장: {summary['model_reference_not_scored']}개",
@@ -360,10 +368,12 @@ def render_report(folder, protocol, records, audit, finished):
 def make_protocol(dataset_path, dataset, cases, profile_key, seed, model_info):
     files = [Path(__file__), Path(__file__).with_name('review.py'), Path(__file__).with_name('qwen_client.py'),
              Path(__file__).with_name('order_gate.py'), Path(__file__).with_name('menu_policy.json'),
-             Path(__file__).with_name('run_review.py')]
+             Path(__file__).with_name('run_review.py'), Path(__file__).with_name('run_school.py')]
     return {'version': VERSION, 'created_at': now(), 'profile_key': profile_key, 'profile': copy.deepcopy(PROFILES[profile_key]),
             'model_info': model_info, 'policy_version': POLICY['version'], 'contract_version': CONTRACT_VERSION,
-            'gate_version': GATE_VERSION, 'seed': seed, 'case_ids': [c['id'] for c in cases],
+            'gate_version': GATE_VERSION, 'transport_version': TRANSPORT_VERSION,
+            'generation_options': {'temperature': 0, 'num_predict': 1024, 'think_requested': False, 'stream': False} if PROFILES[profile_key].get('api_style') == 'ollama' else {'temperature': 0, 'max_tokens': 512, 'enable_thinking': False},
+            'seed': seed, 'case_ids': [c['id'] for c in cases],
             'dataset_sha256': digest(Path(dataset_path).read_bytes()), 'annotation_status': dataset['annotation_status'],
             'source_hashes': {str(p.name): digest(p.read_bytes()) for p in files},
             'prompt_sha256': digest(PROMPT.encode('utf-8')),

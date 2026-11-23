@@ -150,6 +150,18 @@ class BatchTests(unittest.TestCase):
         self.assertEqual(result['actual_calls'], 2)
         self.assertEqual(result['calls_in_previous_attempts'], 1)
 
+    def test_format_recovery_is_not_reported_as_two_valid_json_comparison(self):
+        case = self.cases['Q03']
+        with patch.object(batch, 'request_order', side_effect=lambda p,t,c: response(case['expected_model'],t)):
+            record = batch.execute_case(case, PROFILES['home'], ['A_original'])
+        first = record['responses']['A_original']
+        first['status'] = 'invalid_response'
+        first['reference_score'] = batch.score_model(first, case['expected_model'])
+        summary = batch.summarize([record], 1)
+        self.assertEqual(summary['outcomes']['improved'], 1)
+        self.assertEqual(summary['format_recoveries_in_improved_cases'], 1)
+        self.assertEqual(summary['common_valid_reference']['cases'], 0)
+
     def test_log_dedup_uses_request_identity_not_text_only(self):
         with tempfile.TemporaryDirectory(prefix='봄카페 검증 ') as tmp:
             folder = Path(tmp)
