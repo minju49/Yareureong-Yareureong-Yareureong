@@ -26,7 +26,7 @@ from qwen_client import PROFILES, CONTRACT_VERSION, TRANSPORT_VERSION, ORDER_SCH
 from order_gate import GATE_VERSION, validate_order
 from run_review import CONTEXTS
 
-VERSION = 'bom-review-batch-1.1'
+VERSION = 'bom-review-batch-1.2'
 ROOT = Path(__file__).resolve().parent.parent
 DATASET = Path(__file__).with_name('batch_cases.json')
 KST = timezone(timedelta(hours=9))
@@ -259,9 +259,31 @@ def summarize(records, planned):
             'request_timing': timing([r.get('request_ms') for r in rows if r.get('model_called')]),
             'gate_timing': timing([r['order_decision']['processing_ms'] for r in rows]),
         }
+        core_correct, core_total, core_all, core_cases = 0, 0, 0, 0
+        for record in scored:
+            expected = record['case']['expected_model']
+            if len(expected['items']) != 1:
+                continue
+            item = expected['items'][0]
+            slots = ['menu_id', 'quantity', 'temperature']
+            if any(m['id'] == item['menu_id'] and m['ask_whip'] for m in POLICY['menus']):
+                slots.append('whipped_cream')
+            result = record['responses'][branch]
+            predictions = result.get('parsed', {}).get('items', [])
+            shape_ok = result.get('status') == 'ok' and isinstance(predictions, list) and len(predictions) == 1 and isinstance(predictions[0], dict)
+            matches = [shape_ok and slot in predictions[0] and strict_equal(predictions[0][slot], item[slot]) for slot in slots]
+            core_cases += 1
+            core_total += len(slots)
+            core_correct += sum(matches)
+            core_all += all(matches)
+        branches[branch]['core_slots'] = {'correct': core_correct, 'total': core_total,
+            'all_correct_cases': core_all, 'cases': core_cases,
+            'definition': '골드 항목이 1개인 경우 메뉴·수량·온도, 필요한 메뉴의 휘핑을 비교. null도 명시 정보 부재로 채점. 고정 사이즈와 빈 메모는 제외. 질문 상태는 별도.'}
     earlier_calls = sum(response.get('model_called', False) for record in records
                         for attempt in record.get('previous_attempts', []) for response in attempt['responses'].values())
     return {'planned_cases': planned, 'completed_cases': len(records), 'all_cases_completed': len(records) == planned,
+            'reference_may_accept_cases': sum(not r['case']['must_block'] for r in records),
+            'reference_requires_review_cases': sum(r['case']['must_block'] for r in records),
             'model_reference_scored': len(scored), 'model_reference_not_scored': len(records) - len(scored),
             'common_valid_reference': {'cases': len(common_valid),
                 'A_correct': sum(r['responses']['A_original']['reference_score']['correct'] is True for r in common_valid),
@@ -282,7 +304,8 @@ def summarize(records, planned):
 def render_report(folder, protocol, records, audit, finished):
     summary = summarize(records, len(protocol['case_ids']))
     summary.update(version=VERSION, report_created_at=now(), run_finished=finished, model=protocol['profile']['model'],
-                   annotation_status=protocol['annotation_status'], source_kind='constructed_text_development',
+                   annotation_status=protocol['annotation_status'], source_kind=protocol.get('source_kind','constructed_text_development'),
+                   input_source_audit=protocol.get('input_source_audit'),
                    stt_called_here=False, school_tested=protocol['profile_key'] == 'school' and any(
                        row.get('status') == 'ok' for record in records for row in record['responses'].values()),
                    historical_log_audit=audit)
@@ -310,7 +333,8 @@ def render_report(folder, protocol, records, audit, finished):
     lines = [
         '봄카페 · STT 문장 재점검 개발 점검 결과',
         '모델: ' + protocol['profile']['model'],
-        '범위: 직접 만든 개발용 텍스트 / 마이크·STT·자동 대화·장바구니 실행 없음',
+        '입력 자료 종류: ' + protocol.get('source_kind','constructed_text_development'),
+        '이 배치 프로그램 자체는 마이크·STT·자동 대화·장바구니를 실행하지 않음.',
         '정답표: 사용자 정책을 바탕으로 작성한 초안. 팀원의 독립 검수 전이며 최종 성능이 아님.',
         '',
         f"진행: {summary['completed_cases']} / {summary['planned_cases']}개" + (' — 완료' if summary['all_cases_completed'] and finished else ' — 부분 결과'),
@@ -318,6 +342,9 @@ def render_report(folder, protocol, records, audit, finished):
         f"정상 API·JSON 응답: 원문 {a['api_json_ok']}/{len(records)} / 재점검 {b['api_json_ok']}/{len(records)}. 실패도 분모에 포함함.",
         f"이 중 재시도 전 요청 {summary['calls_in_previous_attempts']}회는 원본을 보관하고 현재 점수/시간 통계에서는 제외함.",
         f"개발 정답표 필드 일치: 원문 {a['reference_correct']}/{a['reference_denominator']} → 재점검 {b['reference_correct']}/{b['reference_denominator']}",
+        f"핵심 슬롯 개별 일치: 원문 {a['core_slots']['correct']}/{a['core_slots']['total']} → 재점검 {b['core_slots']['correct']}/{b['core_slots']['total']}",
+        f"핵심 슬롯 모두 일치한 단일 메뉴 문장: 원문 {a['core_slots']['all_correct_cases']}/{a['core_slots']['cases']} → 재점검 {b['core_slots']['all_correct_cases']}/{b['core_slots']['cases']}",
+        '※ 핵심 슬롯은 메뉴·수량·온도와 필수 휘핑. 고정 사이즈·빈 메모는 제외한다. 위 전체 조건 일치는 의도·질문 유무까지 포함한 더 엄격한 별도 지표다.',
         f"두 경로 모두 정상 API·JSON인 {summary['common_valid_reference']['cases']}개: 원문 {summary['common_valid_reference']['A_correct']} → 재점검 {summary['common_valid_reference']['B_correct']}개 일치",
         f"전체 개선 중 원문 형식 실패 해소를 포함한 사례: {summary['format_recoveries_in_improved_cases']}개. 전부 의미 해석 개선으로 보지 않음.",
         '※ 메뉴·수량·온도·사이즈·휘핑·메모·의도·질문 유무를 모두 비교. 질문 내용의 적절성은 채점하지 않음.',
@@ -328,6 +355,7 @@ def render_report(folder, protocol, records, audit, finished):
         f"원문 경로: 확인이 필요한 요청의 수락 {a['gate'].get('unsafe_accept',0)}건 / 올바른 모델 답변의 추가 차단 {a['gate'].get('unnecessary_block',0)}건",
         f"재점검 경로: 확인이 필요한 요청의 수락 {b['gate'].get('unsafe_accept',0)}건 / 올바른 모델 답변의 추가 차단 {b['gate'].get('unnecessary_block',0)}건",
         f"재점검 경로에서 필드가 맞아 수락 가능한 사례: {b['gate'].get('accepted_correct',0)}건. 차단된 건은 성공 주문 수가 아님.",
+        f"정답 초안상 수락 가능한 완성 입력 분모: {summary['reference_may_accept_cases']}개 / 확인·별도 검토가 필요한 입력: {summary['reference_requires_review_cases']}개",
         f"정정/수량/부정 보존 검사 실패: {len(summary['protected_token_failures'])}건",
         '',
         f"재점검 처리시간: 중앙값 {summary['review_timing']['median_ms']} ms / 최대 {summary['review_timing']['max_ms']} ms",
@@ -346,7 +374,12 @@ def render_report(folder, protocol, records, audit, finished):
                       f"마이크 기록의 재점검 변경 {audit['changed_microphone_requests']}건. 변경은 개선을 뜻하지 않음.",
                       '- 원본 WAV·검수된 정답이 없어 CER를 계산하지 않았다. 짧은 답변의 문맥도 임의로 붙이지 않았다.'])
     else:
-        lines.extend(['', '과거 실제 STT 기록: 이 실행에서는 가져오지 않음.'])
+        lines.extend(['', '별도의 과거 CSV 감사는 이 실행에 추가하지 않음. 입력 자료 종류는 위 source_kind를 확인.'])
+    if summary['input_source_audit'] is not None:
+        source = summary['input_source_audit']
+        lines.extend(['', '이번 입력의 출처',
+            f"기존 마이크 {source.get('microphone_requests')}요청 / 서로 다른 원문 {source.get('distinct_raw_microphone_texts')}개 / 공백·문장부호를 묶은 {source.get('whitespace_punctuation_groups')}개 입력",
+            '관측된 인식 문장의 조건을 비교한 개발 점검이다. 원본 발화/의도의 복원 정확도나 음성 CER가 아니다.'])
     text = '\n'.join(lines) + '\n'
     (folder / '결과요약.txt').write_text(text, encoding='utf-8-sig')
     outcome_names = {'improved': '개선', 'worsened': '악화', 'both_correct': '둘 다 일치', 'both_wrong': '둘 다 불일치', 'not_scored': '모델 채점 제외'}
@@ -375,6 +408,8 @@ def make_protocol(dataset_path, dataset, cases, profile_key, seed, model_info):
             'generation_options': {'temperature': 0, 'num_predict': 1024, 'think_requested': False, 'stream': False} if PROFILES[profile_key].get('api_style') == 'ollama' else {'temperature': 0, 'max_tokens': 512, 'enable_thinking': False},
             'seed': seed, 'case_ids': [c['id'] for c in cases],
             'dataset_sha256': digest(Path(dataset_path).read_bytes()), 'annotation_status': dataset['annotation_status'],
+            'source_kind': dataset.get('source_kind','constructed_text_development'),
+            'input_source_audit': dataset.get('source_audit'),
             'source_hashes': {str(p.name): digest(p.read_bytes()) for p in files},
             'prompt_sha256': digest(PROMPT.encode('utf-8')),
             'schema_sha256': digest(json.dumps(ORDER_SCHEMA, sort_keys=True).encode('utf-8')),
@@ -420,7 +455,7 @@ def main():
         print('모델을 호출하지 않았고, 성능 점수를 계산하지 않았습니다.')
         return 1 if failures else 0
     print(VERSION + ' · ' + PROFILES[args.profile]['name'], flush=True)
-    print(f"개발용 텍스트 {len(cases)}개. 마이크/STT·장바구니는 실행하지 않아요.", flush=True)
+    print(f"입력 문장 {len(cases)}개 / {dataset.get('source_kind','constructed_text_development')}. 마이크/STT·장바구니는 실행하지 않아요.", flush=True)
     try:
         model_info = check_model(PROFILES[args.profile])
     except Exception as exc:

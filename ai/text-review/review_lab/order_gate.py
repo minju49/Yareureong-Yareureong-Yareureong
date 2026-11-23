@@ -10,9 +10,9 @@ import copy
 import re
 import time
 
-from review import MENUS, POLICY, exact_mentions, policy_check
+from review import MENUS, POLICY, exact_mentions, policy_check, review_transcript
 
-GATE_VERSION = 'bom-order-gate-0.1'
+GATE_VERSION = 'bom-order-gate-0.2'
 LABELS = {'ready': '확정 가능(필드 수준)', 'ask': '되묻기', 'menu_check': '메뉴 확인',
           'hold': '판정 보류', 'unavailable': '응답 확인 불가'}
 
@@ -32,8 +32,10 @@ def validate_order(row, model_text, context=None, *, evidence_text=None, changes
     source = model_text if evidence_text is None else evidence_text
     context = copy.deepcopy(context or {})
     facts = policy_check(source, context)
-    ids = list(dict.fromkeys(m['menu_id'] for m in exact_mentions(source)))
+    mentions = exact_mentions(source)
+    ids = list(dict.fromkeys(m['menu_id'] for m in mentions))
     if not ids and facts.get('scope') == 'simple_single_add': ids = [facts['menu_id']]
+    source_review = None
 
     def finish(status, question='', reasons=(), *, validated=None, completions=None, candidates=None):
         return {'version': GATE_VERSION, 'status': status, 'label': LABELS[status],
@@ -42,6 +44,7 @@ def validate_order(row, model_text, context=None, *, evidence_text=None, changes
                 'catalog_completions': copy.deepcopy(completions or []),
                 'candidate_menu_ids': list(candidates or []), 'evidence_text': source,
                 'model_input_text': model_text, 'source_facts': copy.deepcopy(facts),
+                'source_review': copy.deepcopy(source_review),
                 'cart_mutated': False, 'order_committed': False,
                 'customer_final_confirmation_required': True,
                 'processing_ms': round((time.perf_counter()-started)*1000, 3),
@@ -80,6 +83,17 @@ def validate_order(row, model_text, context=None, *, evidence_text=None, changes
     if any(c.get('kind') == 'menu_typo_candidate' for c in changes or []):
         return finish('menu_check', menu['name'] + '를 말씀하신 건가요?',
                       ['실험적 오타 보정으로 선택한 메뉴는 사용자 확인 필요'], candidates=ids)
+    diagnostic = review_transcript(source, context)
+    source_review = {'needs_review': diagnostic['needs_review'], 'notes': diagnostic['notes'],
+                     'unresolved_candidates': [c for c in diagnostic['candidates'] if not c['automatic']]}
+    if source_review['needs_review']:
+        return finish('menu_check', '확인되지 않은 메뉴 표현이 있어요. 메뉴를 하나씩 말씀해 주세요.',
+                      ['재점검의 미확인 표현을 검증 단계에서도 보존함',
+                       '알아들은 메뉴만 남기고 요청 일부를 수락하지 않음'], candidates=ids)
+    if mentions and re.search(r'이랑|랑|그리고|하고|및|또', source[min(m['end'] for m in mentions):]):
+        return finish('hold', '함께 말씀하신 내용을 확인할게요. 메뉴를 하나씩 말씀해 주세요.',
+                      ['알려진 메뉴 뒤의 연결 표현에 추가 요청이 남아 있을 수 있음',
+                       '등록 메뉴가 한 개만 잡혔어도 단일 추가 주문으로 단정하지 않음'], candidates=ids)
     if any(item.get('menu_id') != menu_id for item in items):
         return finish('menu_check', menu['name'] + '를 말씀하신 건가요?',
                       ['입력의 메뉴와 모델이 반환한 메뉴가 다름'], candidates=ids)

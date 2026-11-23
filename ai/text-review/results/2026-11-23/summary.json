@@ -1,0 +1,366 @@
+{
+  "policy_version": "bom-text-review-0.4",
+  "gate_version": "bom-order-gate-0.2",
+  "model": "Qwen/Qwen3.5-0.8B",
+  "home_hardware": {
+    "cpu": "AMD Ryzen 5 7500F",
+    "ram_gb_nominal": 32,
+    "gpu": "NVIDIA GeForce RTX 4060 8GB",
+    "asr_device": "CPU INT8, 4 threads",
+    "qwen_device": "existing vLLM GPU, bfloat16"
+  },
+  "annotation": "개발용 정답 초안. 독립 검수/최종 시험셋이 아님.",
+  "constructed56": {
+    "planned_cases": 56,
+    "completed_cases": 56,
+    "model_reference_scored": 44,
+    "model_reference_not_scored": 12,
+    "outcomes": {
+      "both_wrong": 31,
+      "both_correct": 8,
+      "not_scored": 12,
+      "improved": 5
+    },
+    "branches": {
+      "A_original": {
+        "reference_denominator": 44,
+        "reference_correct": 8,
+        "api_json_ok": 55,
+        "actual_model_calls": 56,
+        "shared_responses": 0,
+        "gate": {
+          "blocked_inconsistent": 15,
+          "accepted_correct": 8,
+          "blocked_required": 32,
+          "unavailable": 1
+        },
+        "gate_decision_counts": {
+          "menu_check": 19,
+          "ready": 8,
+          "hold": 8,
+          "ask": 20,
+          "unavailable": 1
+        },
+        "catalog_completions": 0,
+        "field_correct": {
+          "intent": 19,
+          "needs_clarification": 22,
+          "question_presence": 19,
+          "menu_id": 28,
+          "quantity": 27,
+          "temperature": 24,
+          "size": 36,
+          "whipped_cream": 34,
+          "custom_note": 33
+        },
+        "request_timing": {
+          "n": 56,
+          "mean_ms": 2729.589,
+          "median_ms": 2346.131,
+          "p95_ms": 5741.506,
+          "max_ms": 12367.73
+        },
+        "gate_timing": {
+          "n": 56,
+          "mean_ms": 0.293,
+          "median_ms": 0.253,
+          "p95_ms": 0.634,
+          "max_ms": 1.541
+        },
+        "core_slots": {
+          "correct": 83,
+          "total": 128,
+          "all_correct_cases": 14,
+          "cases": 40,
+          "definition": "골드 항목이 1개인 경우 메뉴·수량·온도, 필요한 메뉴의 휘핑을 비교. null도 명시 정보 부재로 채점. 고정 사이즈와 빈 메모는 제외. 질문 상태는 별도."
+        }
+      },
+      "B_reviewed": {
+        "reference_denominator": 44,
+        "reference_correct": 13,
+        "api_json_ok": 56,
+        "actual_model_calls": 24,
+        "shared_responses": 32,
+        "gate": {
+          "blocked_inconsistent": 13,
+          "accepted_correct": 11,
+          "blocked_required": 32
+        },
+        "gate_decision_counts": {
+          "menu_check": 20,
+          "ready": 11,
+          "hold": 7,
+          "ask": 18
+        },
+        "catalog_completions": 0,
+        "field_correct": {
+          "intent": 24,
+          "needs_clarification": 26,
+          "question_presence": 24,
+          "menu_id": 28,
+          "quantity": 29,
+          "temperature": 31,
+          "size": 36,
+          "whipped_cream": 36,
+          "custom_note": 36
+        },
+        "request_timing": {
+          "n": 24,
+          "mean_ms": 2743.842,
+          "median_ms": 2645.243,
+          "p95_ms": 4181.986,
+          "max_ms": 4732.92
+        },
+        "gate_timing": {
+          "n": 56,
+          "mean_ms": 0.192,
+          "median_ms": 0.187,
+          "p95_ms": 0.453,
+          "max_ms": 0.498
+        },
+        "core_slots": {
+          "correct": 93,
+          "total": 128,
+          "all_correct_cases": 21,
+          "cases": 40,
+          "definition": "골드 항목이 1개인 경우 메뉴·수량·온도, 필요한 메뉴의 휘핑을 비교. null도 명시 정보 부재로 채점. 고정 사이즈와 빈 메모는 제외. 질문 상태는 별도."
+        }
+      }
+    },
+    "common_valid_reference": {
+      "cases": 43,
+      "A_correct": 8,
+      "B_correct": 12
+    },
+    "format_recoveries_in_improved_cases": 1,
+    "review_timing": {
+      "n": 56,
+      "mean_ms": 0.135,
+      "median_ms": 0.083,
+      "p95_ms": 0.428,
+      "max_ms": 0.552
+    },
+    "actual_calls": 80,
+    "reference_may_accept_cases": 24,
+    "reference_requires_review_cases": 32,
+    "gate_version": "bom-order-gate-0.2"
+  },
+  "historical_stt43": {
+    "planned_cases": 43,
+    "completed_cases": 43,
+    "model_reference_scored": 18,
+    "model_reference_not_scored": 25,
+    "outcomes": {
+      "not_scored": 25,
+      "both_wrong": 14,
+      "improved": 3,
+      "both_correct": 1
+    },
+    "branches": {
+      "A_original": {
+        "reference_denominator": 18,
+        "reference_correct": 1,
+        "api_json_ok": 39,
+        "actual_model_calls": 43,
+        "shared_responses": 0,
+        "gate": {
+          "blocked_required": 30,
+          "blocked_inconsistent": 8,
+          "unavailable": 4,
+          "accepted_correct": 1
+        },
+        "gate_decision_counts": {
+          "hold": 7,
+          "ask": 9,
+          "menu_check": 22,
+          "unavailable": 4,
+          "ready": 1
+        },
+        "catalog_completions": 0,
+        "field_correct": {
+          "intent": 4,
+          "needs_clarification": 7,
+          "question_presence": 4,
+          "menu_id": 10,
+          "quantity": 10,
+          "temperature": 10,
+          "size": 15,
+          "whipped_cream": 15,
+          "custom_note": 15
+        },
+        "request_timing": {
+          "n": 43,
+          "mean_ms": 3496.929,
+          "median_ms": 2644.093,
+          "p95_ms": 10337.911,
+          "max_ms": 12658.877
+        },
+        "gate_timing": {
+          "n": 43,
+          "mean_ms": 0.205,
+          "median_ms": 0.159,
+          "p95_ms": 0.627,
+          "max_ms": 0.985
+        },
+        "core_slots": {
+          "correct": 30,
+          "total": 54,
+          "all_correct_cases": 3,
+          "cases": 18,
+          "definition": "골드 항목이 1개인 경우 메뉴·수량·온도, 필요한 메뉴의 휘핑을 비교. null도 명시 정보 부재로 채점. 고정 사이즈와 빈 메모는 제외. 질문 상태는 별도."
+        }
+      },
+      "B_reviewed": {
+        "reference_denominator": 18,
+        "reference_correct": 4,
+        "api_json_ok": 42,
+        "actual_model_calls": 16,
+        "shared_responses": 27,
+        "gate": {
+          "blocked_required": 31,
+          "blocked_inconsistent": 6,
+          "accepted_correct": 4,
+          "unavailable": 1,
+          "unsafe_accept": 1
+        },
+        "gate_decision_counts": {
+          "hold": 8,
+          "ask": 6,
+          "menu_check": 23,
+          "ready": 5,
+          "unavailable": 1
+        },
+        "catalog_completions": 0,
+        "field_correct": {
+          "intent": 11,
+          "needs_clarification": 11,
+          "question_presence": 11,
+          "menu_id": 10,
+          "quantity": 12,
+          "temperature": 14,
+          "size": 17,
+          "whipped_cream": 17,
+          "custom_note": 17
+        },
+        "request_timing": {
+          "n": 16,
+          "mean_ms": 2329.241,
+          "median_ms": 2296.923,
+          "p95_ms": 3191.514,
+          "max_ms": 3191.514
+        },
+        "gate_timing": {
+          "n": 43,
+          "mean_ms": 0.112,
+          "median_ms": 0.094,
+          "p95_ms": 0.206,
+          "max_ms": 0.392
+        },
+        "core_slots": {
+          "correct": 36,
+          "total": 54,
+          "all_correct_cases": 5,
+          "cases": 18,
+          "definition": "골드 항목이 1개인 경우 메뉴·수량·온도, 필요한 메뉴의 휘핑을 비교. null도 명시 정보 부재로 채점. 고정 사이즈와 빈 메모는 제외. 질문 상태는 별도."
+        }
+      }
+    },
+    "common_valid_reference": {
+      "cases": 15,
+      "A_correct": 1,
+      "B_correct": 4
+    },
+    "format_recoveries_in_improved_cases": 0,
+    "review_timing": {
+      "n": 43,
+      "mean_ms": 0.108,
+      "median_ms": 0.076,
+      "p95_ms": 0.277,
+      "max_ms": 0.312
+    },
+    "actual_calls": 59,
+    "reference_may_accept_cases": 11,
+    "reference_requires_review_cases": 32,
+    "gate_version_at_original_run": "bom-order-gate-0.1",
+    "replayed_with_gate_version": "bom-order-gate-0.2"
+  },
+  "gate_replay": {
+    "new_gate_version": "bom-order-gate-0.2",
+    "case_count": 43,
+    "new_model_calls": 0,
+    "raw_model_answers_rewritten": false,
+    "source_files_unchanged": true,
+    "branches": {
+      "A_original": {
+        "previous_gate_versions": [
+          "bom-order-gate-0.1"
+        ],
+        "previous": {
+          "blocked_required": 30,
+          "accepted_correct": 1,
+          "blocked_inconsistent": 8,
+          "unavailable": 4
+        },
+        "replayed": {
+          "blocked_required": 30,
+          "accepted_correct": 1,
+          "blocked_inconsistent": 8,
+          "unavailable": 4
+        },
+        "changed_cases": []
+      },
+      "B_reviewed": {
+        "previous_gate_versions": [
+          "bom-order-gate-0.1"
+        ],
+        "previous": {
+          "blocked_required": 31,
+          "accepted_correct": 4,
+          "blocked_inconsistent": 6,
+          "unavailable": 1,
+          "unsafe_accept": 1
+        },
+        "replayed": {
+          "blocked_required": 32,
+          "accepted_correct": 4,
+          "blocked_inconsistent": 6,
+          "unavailable": 1
+        },
+        "changed_cases": [
+          "H016"
+        ]
+      }
+    },
+    "scope": "이미 본 개발 기록의 검증기 회귀 점검. 새 Qwen 실험/독립 시험셋이 아님."
+  },
+  "selected_asr_chain": {
+    "input_source": "bundled_synthetic_smoke_not_human_recording",
+    "stt": {
+      "actual_model_called": true,
+      "model": "iic/SenseVoiceSmall",
+      "checkpoint": "csukuangfj/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17@2365baeacb507f821a0c8120fcee3d484dba7a07",
+      "precision": "int8",
+      "device": "cpu",
+      "cpu_threads": 4,
+      "duration_s": 3.057,
+      "text": "아이스 아메리카노 하나 주세요",
+      "load_ms": 1119.401,
+      "inference_ms": 55.03
+    },
+    "reviewed_text": "아이스 아메리카노 하나 주세요",
+    "review_ms": 0.882,
+    "actual_qwen_calls": 1,
+    "api_json_chain_ok": true,
+    "B_fields_accepted": true,
+    "cart_mutated": false,
+    "human_microphone_tested": false
+  },
+  "school_9b_tested": false,
+  "real_microphone_cer_calculated": false,
+  "source_run_ids": {
+    "constructed56": "20261123-184214-c2f8f0",
+    "historical43": "20261123-182826-23766c",
+    "replay": "20261123-184159-d69de0",
+    "chain": "20261123-184614-31a46a"
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "constructed56": {
+    "dataset_sha256": "72a3e9073e05b869dcea9a652742ab74b5da9b9277ed8fbf03f491ce9f969aeb",
+    "source_hashes": {
+      "run_batch.py": "cee1fe168a5ab32becf692f78b929bb57077df34feb3254e9d45d2ba9d4cb905",
+      "review.py": "1318864363d42b0e7139a2b768bed30058382d68e323664ed12377e1c3b4c16a",
+      "qwen_client.py": "0fa0993ccc27759c0ac08bf883bb9ff33bcefc399e1627556417c9b7287c9f53",
+      "order_gate.py": "f041fc84077ddf332b6bac36249f86a4050503bc591e96848fb9949b7dfb3f4b",
+      "menu_policy.json": "41e876be298c7c19a485abf5beb15f2c102f73fc9fb315d9840a381a23e8e8a8",
+      "run_review.py": "afbfa6ad5e55da769f433af62025be31d5226dfd682f75ccd5d5da3ac37ca4e9",
+      "run_school.py": "b010e8feaafcea259d4479ca8ba0c7c75549d80fbbe813329df9295c1d4ebc24"
+    },
+    "prompt_sha256": "28f6822a27f282e76f9114364588525d5cb328a00e31f760bd0b654358b1a1f4",
+    "schema_sha256": "6dcc40952a908d2a348686dce591a4159d188e198000d1a3f261941516611e05",
+    "model_info": {
+      "object": "list",
+      "data": [
+        {
+          "id": "Qwen/Qwen3.5-0.8B",
+          "object": "model",
+          "created": 1795426934,
+          "owned_by": "vllm",
+          "root": "Qwen/Qwen3.5-0.8B",
+          "parent": null,
+          "max_model_len": 4096,
+          "permission": [
+            {
+              "id": "modelperm-8e21e9f58af4f584",
+              "object": "model_permission",
+              "created": 1795426934,
+              "allow_create_engine": false,
+              "allow_sampling": true,
+              "allow_logprobs": true,
+              "allow_search_indices": false,
+              "allow_view": true,
+              "allow_fine_tuning": false,
+              "organization": "*",
+              "group": null,
+              "is_blocking": false
+            }
+          ]
+        }
+      ]
+    },
+    "policy_version": "bom-text-review-0.4",
+    "gate_version": "bom-order-gate-0.2",
+    "contract_version": "qwen-order-fields-0.3-short",
+    "generation_options": {
+      "temperature": 0,
+      "max_tokens": 512,
+      "enable_thinking": false
+    },
+    "seed": 20261122
+  },
+  "historical43": {
+    "dataset_sha256": "78dd7e94ca65164473d9714bd69ab0d10c19b3026c6c7c9437bb880a83b22e65",
+    "source_hashes": {
+      "run_batch.py": "cee1fe168a5ab32becf692f78b929bb57077df34feb3254e9d45d2ba9d4cb905",
+      "review.py": "1318864363d42b0e7139a2b768bed30058382d68e323664ed12377e1c3b4c16a",
+      "qwen_client.py": "0fa0993ccc27759c0ac08bf883bb9ff33bcefc399e1627556417c9b7287c9f53",
+      "order_gate.py": "5267d61d6c4c1029a504cfbc29b29c84c592d4843e1f80108630bdbe7951e88d",
+      "menu_policy.json": "41e876be298c7c19a485abf5beb15f2c102f73fc9fb315d9840a381a23e8e8a8",
+      "run_review.py": "afbfa6ad5e55da769f433af62025be31d5226dfd682f75ccd5d5da3ac37ca4e9",
+      "run_school.py": "b010e8feaafcea259d4479ca8ba0c7c75549d80fbbe813329df9295c1d4ebc24"
+    },
+    "prompt_sha256": "28f6822a27f282e76f9114364588525d5cb328a00e31f760bd0b654358b1a1f4",
+    "schema_sha256": "6dcc40952a908d2a348686dce591a4159d188e198000d1a3f261941516611e05",
+    "model_info": {
+      "object": "list",
+      "data": [
+        {
+          "id": "Qwen/Qwen3.5-0.8B",
+          "object": "model",
+          "created": 1795426106,
+          "owned_by": "vllm",
+          "root": "Qwen/Qwen3.5-0.8B",
+          "parent": null,
+          "max_model_len": 4096,
+          "permission": [
+            {
+              "id": "modelperm-af7547f732ceb267",
+              "object": "model_permission",
+              "created": 1795426106,
+              "allow_create_engine": false,
+              "allow_sampling": true,
+              "allow_logprobs": true,
+              "allow_search_indices": false,
+              "allow_view": true,
+              "allow_fine_tuning": false,
+              "organization": "*",
+              "group": null,
+              "is_blocking": false
+            }
+          ]
+        }
+      ]
+    },
+    "policy_version": "bom-text-review-0.4",
+    "gate_version": "bom-order-gate-0.1",
+    "contract_version": "qwen-order-fields-0.3-short",
+    "generation_options": {
+      "temperature": 0,
+      "max_tokens": 512,
+      "enable_thinking": false
+    },
+    "seed": 20261122
+  }
+}

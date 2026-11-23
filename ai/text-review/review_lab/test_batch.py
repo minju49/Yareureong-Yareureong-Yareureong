@@ -162,6 +162,15 @@ class BatchTests(unittest.TestCase):
         self.assertEqual(summary['format_recoveries_in_improved_cases'], 1)
         self.assertEqual(summary['common_valid_reference']['cases'], 0)
 
+    def test_core_slots_exclude_constants_and_empty_item_references(self):
+        records=[]
+        for ident in ['N01','M01']:
+            case=self.cases[ident]
+            with patch.object(batch, 'request_order', side_effect=lambda p,t,c: response(case['expected_model'],t)):
+                records.append(batch.execute_case(case,PROFILES['home'],['A_original']))
+        slots=batch.summarize(records,2)['branches']['A_original']['core_slots']
+        self.assertEqual((slots['correct'],slots['total'],slots['cases']),(3,3,1))
+
     def test_log_dedup_uses_request_identity_not_text_only(self):
         with tempfile.TemporaryDirectory(prefix='봄카페 검증 ') as tmp:
             folder = Path(tmp)

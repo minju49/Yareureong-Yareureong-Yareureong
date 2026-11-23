@@ -17,6 +17,25 @@ def response(menu='americano', quantity=1, temp='ice', *, intent='add', needs=Fa
 
 
 class GateTests(unittest.TestCase):
+    def test_unknown_second_alias_does_not_become_partial_accepted_order(self):
+        for text in ['아아 하나랑 아봐라 하나 주세요','아아 한 잔 아봐라 하나 주세요']:
+            reviewed=review_transcript(text)
+            row=response(input_text=reviewed['reviewed_text'])
+            before=copy.deepcopy(row)
+            out=validate_order(row,reviewed['reviewed_text'],evidence_text=reviewed['lexical_text'],changes=reviewed['changes'])
+            self.assertFalse(out['can_accept_fields'])
+            self.assertFalse(out['validated_items'])
+            self.assertTrue(out['source_review']['needs_review'])
+            self.assertEqual(row,before)
+
+    def test_unknown_second_menu_after_connector_cannot_be_ignored(self):
+        for text in ['아아 한 잔이랑 레몬차 한 잔 주세요','아아랑 레몬차 하나 주세요','아아 한 잔 그리고 레몬차요']:
+            self.assertFalse(validate_order(response(),text)['can_accept_fields'])
+
+    def test_leading_connector_does_not_block_a_single_complete_add(self):
+        out=validate_order(response(),'그리고 아아 한 잔 주세요')
+        self.assertEqual(out['status'],'ready')
+
     def test_complete_known_item_is_only_field_ready(self):
         out = validate_order(response(), '아아 한 잔 주세요')
         self.assertEqual(out['status'], 'ready')
