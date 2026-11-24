@@ -1,0 +1,61 @@
+{
+  "launcher_version": "bom-linux-launch-1.0",
+  "policy_version": "bom-text-review-0.5",
+  "minimum_python": "3.10",
+  "tests_per_environment": 126,
+  "linux_results": [
+    {
+      "status": "pass",
+      "os": "Linux-6.18.58.1-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+      "python": "3.10.22",
+      "uid": 1000,
+      "unicode_space_path": "/tmp/한글 경로 idyyg1aa/실험 폴더",
+      "checks": {
+        "unit_tests": "..............................................................................................................................\n----------------------------------------------------------------------\nRan 126 tests in 0.078s\n\nOK\n",
+        "shell_lf_syntax": true,
+        "all_offline_launchers_no_http": true,
+        "interactive_menu": true,
+        "missing_python_actionable": true,
+        "local_fixture_connection": true,
+        "both_batch_entry_points_with_fixture": true,
+        "component_entry_point_with_fixture": true,
+        "failure_and_wrong_model_do_not_count_as_success": true,
+        "native_paths_utf8_and_no_reference_in_requests": true
+      },
+      "school_model_tested": false,
+      "model_accuracy_evaluated": false,
+      "http_server": "loopback controlled fixture; no real Qwen",
+      "network_mode": "Docker --network none",
+      "request_count_to_fixture": 103
+    },
+    {
+      "status": "pass",
+      "os": "Linux-6.18.58.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+      "python": "3.14.10",
+      "uid": 1000,
+      "unicode_space_path": "/tmp/한글 경로 td6dspdb/실험 폴더",
+      "checks": {
+        "unit_tests": "..............................................................................................................................\n----------------------------------------------------------------------\nRan 126 tests in 0.061s\n\nOK\n",
+        "shell_lf_syntax": true,
+        "all_offline_launchers_no_http": true,
+        "interactive_menu": true,
+        "missing_python_actionable": true,
+        "local_fixture_connection": true,
+        "both_batch_entry_points_with_fixture": true,
+        "component_entry_point_with_fixture": true,
+        "failure_and_wrong_model_do_not_count_as_success": true,
+        "native_paths_utf8_and_no_reference_in_requests": true
+      },
+      "school_model_tested": false,
+      "model_accuracy_evaluated": false,
+      "http_server": "loopback controlled fixture; no real Qwen",
+      "network_mode": "Docker --network none",
+      "request_count_to_fixture": 103
+    }
+  ],
+  "native_python_included": false,
+  "windows_runtime_included": false,
+  "requires_pip_packages": false,
+  "school_qwen_tested": false,
+  "scope": "리눅스 실행·파일·표준 API 계약 점검. 실제 학교 Qwen/정확도 검증이 아님."
+}
