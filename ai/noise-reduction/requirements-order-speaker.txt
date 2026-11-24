@@ -1,0 +1,4 @@
+-r requirements-ensemble.txt
+speechbrain==1.0.3
+hyperpyyaml==1.2.3
+sherpa-onnx==1.12.40

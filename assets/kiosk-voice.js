@@ -1,7 +1,16 @@
 const kioskVoiceEnabled = location.pathname.endsWith('/kiosk/');
 let kioskDenoiseMode = 'off';
+let orderVoice = {candidate:null, session:null, confirming:false, revision:0};
 const kioskModes = {off:'OFF · 전처리만',zipenhancer:'ON · ZipEnhancer',auto:'AUTO · 자동 선택',
-  parallel:'두 모델 병렬',moss_to_zip:'MossFormerGAN → ZipEnhancer',zip_to_moss:'ZipEnhancer → MossFormerGAN'};
+  parallel:'두 모델 병렬',moss_to_zip:'MossFormerGAN → ZipEnhancer',zip_to_moss:'ZipEnhancer → MossFormerGAN',
+  order_speaker:'주문할게요 · 같은 화자 추적'};
+const orderVoiceMessages = {
+  cue_missing:'첫 주문은 “주문할게요”로 시작해 주세요.',
+  cue_ambiguous:'두 사람의 호출어가 들렸어요. 한 분만 다시 말해 주세요.',
+  order_missing:'“주문할게요”에 이어 주문할 메뉴를 말씀해 주세요.',
+  invalid_clip:'1초에서 8초 사이로 말씀해 주세요.',
+  speaker_unclear:'처음 주문한 분의 목소리를 확실히 찾지 못했어요. 다시 말해 주세요.'
+};
 const escapeVoiceText = value => String(value).replace(/[&<>"']/g, char => ({
   '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
 })[char]);
@@ -10,8 +19,64 @@ function kioskMicControls() {
   if (!kioskVoiceEnabled) return '<small>음성은 저장하거나 전송하지 않아요.</small>';
   const modes = Object.entries(kioskModes).map(([value, label]) =>
     `<option value="${value}" ${value === kioskDenoiseMode ? 'selected' : ''}>${label}</option>`).join('');
-  return `<label>잡음 제거 <select aria-label="잡음 제거" onchange="kioskDenoiseMode=this.value" ${mic.state === 'idle' ? '' : 'disabled'}>${modes}</select></label>
-    <p><small>녹음은 이 PC의 음성 서버에서 처리해요.</small></p>`;
+  const hint = orderVoice.session ? '첫 음성이 확인됐어요. 이어서 말씀해 주세요.' : '“주문할게요”에 이어 메뉴를 말해 주세요.';
+  const actions = orderVoice.candidate
+    ? `<div class="row"><button class="primary" onclick="confirmOrderVoice()" ${orderVoice.confirming ? 'disabled' : ''}>첫 주문 음성 확인</button><button onclick="resetOrderVoice(true)">다시 말하기</button></div>`
+    : orderVoice.session ? '<button onclick="resetOrderVoice(true)">음성 주문 종료</button>' : '';
+  return `<label>음성 처리 <select aria-label="음성 처리" onchange="changeKioskMode(this.value)" ${mic.state === 'idle' && !orderVoice.confirming ? '' : 'disabled'}>${modes}</select></label>
+    <p><small>${kioskDenoiseMode === 'order_speaker' ? hint : '녹음은 이 PC의 음성 서버에서 처리해요.'}</small></p>${actions}`;
+}
+
+function endOrderVoice(token) {
+  if (!token) return;
+  fetch('./api/order-voice/end', {method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({token}),keepalive:true}).catch(() => {});
+}
+
+function resetOrderVoice(refresh=false) {
+  const previous=orderVoice;
+  orderVoice={candidate:null,session:null,confirming:false,revision:previous.revision+1};
+  endOrderVoice(previous.candidate || previous.session);
+  if (refresh) {
+    stopMic(false);
+    draw();
+  }
+}
+
+function changeKioskMode(mode) {
+  resetOrderVoice();
+  kioskDenoiseMode=mode;
+  mic.message='';
+  mic.route='';
+  draw();
+}
+
+async function confirmOrderVoice() {
+  if (!orderVoice.candidate || orderVoice.confirming || mic.state!=='idle') return;
+  const token=orderVoice.candidate;
+  const revision=orderVoice.revision;
+  orderVoice.confirming=true;
+  draw();
+  try {
+    const response=await fetch('./api/order-voice/confirm',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({token}),signal:AbortSignal.timeout(30000)});
+    const result=await response.json();
+    if (revision!==orderVoice.revision) return;
+    if (!response.ok) {
+      if (response.status===409 || response.status===422) orderVoice.candidate=null;
+      throw new Error(result.detail || '음성을 확인하지 못했어요.');
+    }
+    orderVoice.session=result.session;
+    orderVoice.candidate=null;
+    mic.message='첫 음성을 확인했어요. 다음 말은 호출어 없이 말씀해 주세요.';
+  } catch(error) {
+    if (revision===orderVoice.revision) mic.message=error.message;
+  } finally {
+    if (revision===orderVoice.revision) {
+      orderVoice.confirming=false;
+      draw();
+    }
+  }
 }
 
 async function attachKioskRecorder(context, source, token) {
@@ -70,10 +135,23 @@ async function submitKioskRecording() {
     const form = new FormData();
     form.append('file', clip, 'order.wav');
     form.append('mode', mode);
+    if (mode==='order_speaker' && orderVoice.session) form.append('session',orderVoice.session);
     const response = await fetch('./api/speech', {method:'POST', body:form, signal:controller.signal});
     const result = await response.json();
-    if (!response.ok) throw new Error(typeof result.detail === 'string' ? result.detail : '음성을 처리하지 못했어요.');
-    if (token !== mic.token) return;
+    if (token !== mic.token) {
+      endOrderVoice(result.candidate_id);
+      return;
+    }
+    if (!response.ok) {
+      if (mode==='order_speaker' && response.status===409) resetOrderVoice();
+      throw new Error(typeof result.detail === 'string' ? result.detail : '음성을 처리하지 못했어요.');
+    }
+    if (mode==='order_speaker') {
+      if (result.candidate_id) orderVoice.candidate=result.candidate_id;
+      mic.message=result.text ? `이렇게 들었어요: ${result.text}` : orderVoiceMessages[result.status] || '다시 말해 주세요.';
+      mic.route=`${kioskModes.order_speaker} · 음성 처리 ${result.processing_seconds.toFixed(2)}초`;
+      return;
+    }
     const route = result.selected === 'off' ? 'OFF · 전처리만' : kioskModes[result.selected];
     mic.message = result.text ? `이렇게 들었어요: ${result.text}` : '말씀을 듣지 못했어요. 다시 말해 주세요.';
     mic.route = `${route} · 잡음 제거 ${result.processing_seconds.toFixed(2)}초`;
