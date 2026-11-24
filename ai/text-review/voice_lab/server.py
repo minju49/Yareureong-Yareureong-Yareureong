@@ -34,7 +34,7 @@ from qwen_client import PROFILES,CONTRACT_VERSION,TRANSPORT_VERSION,ORDER_SCHEMA
 from run_school import configure,preflight
 from order_gate import GATE_VERSION
 
-VERSION='bom-voice-review-1.0'
+VERSION='bom-voice-review-1.1'
 KST=timezone(timedelta(hours=9))
 DATASET=ROOT/'review_lab'/'additional20_cases.json'
 STATIC=Path(__file__).with_name('static')
@@ -73,7 +73,7 @@ class Experiment:
             'cpu':platform.processor(),'logical_cpu_count':os.cpu_count(),'memory_note':'STT는 CPU 2스레드. 실제 PC 사양은 작업 관리자에서도 확인하세요.',
             'stt':self.engine.status(),'busy':self.busy,
             'qwen':{'model':self.profile['model'],'base_url':self.profile['base_url'],'last_connection_check':self.check},
-            'policy_version':POLICY['version'],'contract_version':CONTRACT_VERSION,
+            'policy_version':POLICY['version'],'contract_version':CONTRACT_VERSION,'gate_version':GATE_VERSION,
             'noise_reduction':'별도 모델 미적용. 녹음 시 요청한 브라우저 필터와 실제 설정은 개별 기록에 저장.',
             'stt_method':'녹음을 마친 뒤 최종 문장을 인식. 스트리밍·임시 자막 없음.',
             'scope':'실제 STT→문장 재점검→선택 시 학교 Qwen A/B→필드 검증. 장바구니·TTS·DB·결제 없음.',
@@ -140,7 +140,7 @@ class Experiment:
                 'reference_answers_sent':False,'no_automatic_conversation_state':True,
                 'code_sha256':{str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in
                     [Path(__file__),Path(__file__).with_name('stt_engine.py'),*[ROOT/'review_lab'/n for n in
-                    ('review.py','qwen_client.py','order_gate.py','run_batch.py','case_context.py','option_spacing.py','menu_policy.json')]]}}
+                    ('review.py','qwen_client.py','order_gate.py','run_batch.py','case_context.py','gate_evidence.py','option_spacing.py','menu_policy.json')]]}}
             return result
         except Exception as exc:
             result.update(status='failed',error=str(exc),traceback=traceback.format_exc())

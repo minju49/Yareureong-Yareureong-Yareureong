@@ -90,7 +90,7 @@ def payload(profile, text, context):
     # Same prompt, menu and context on both sides. Reference answers are never sent.
     menu = [{'menu_id': m['id'], **{k: m[k] for k in ('name', 'temperatures', 'ask_whip')}} for m in POLICY['menus']]
     data = {'text': text, 'context': copy.deepcopy(context or {}), 'menu': menu}
-    body = {'model': profile['model'], 'messages': [{'role': 'system', 'content': PROMPT},
+    body = {'model': profile['model'], 'messages': [{'role': 'system', 'content': profile.get('system_prompt',PROMPT)},
             {'role': 'user', 'content': json.dumps(data, ensure_ascii=False)}],
             'temperature': 0, 'max_tokens': 512,
             'response_format': {'type': 'json_schema', 'json_schema': {

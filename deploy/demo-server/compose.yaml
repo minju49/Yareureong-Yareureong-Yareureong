@@ -1,0 +1,39 @@
+name: bom-midterm-menu
+services:
+  db:
+    image: mariadb:11.4
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: cafe_test
+      MARIADB_USER: bom
+      MARIADB_PASSWORD: ${BOM_DB_PASSWORD:?Run 1_prepare.sh first}
+      MARIADB_ROOT_PASSWORD: ${BOM_DB_ROOT_PASSWORD:?Run 1_prepare.sh first}
+    volumes:
+      - menu-data:/var/lib/mysql
+      - ./menus_catalog.sql:/docker-entrypoint-initdb.d/01-menus.sql:ro
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 4s
+      retries: 30
+  spring:
+    image: bom-menu-service:1124
+    restart: unless-stopped
+    ports:
+      - "${BOM_SPRING_BIND:-0.0.0.0}:${BOM_MENU_HTTP_PORT:-8080}:8080"
+    environment:
+      BOM_DB_URL: jdbc:mariadb://db:3306/cafe_test
+      BOM_DB_USER: bom
+      BOM_DB_PASSWORD: ${BOM_DB_PASSWORD}
+      BOM_MENU_PORT: 8080
+    depends_on:
+      db:
+        condition: service_healthy
+  noise:
+    image: bom-noise-zip:1124
+    profiles: [noise]
+    restart: unless-stopped
+    ports:
+      - "${BOM_SPRING_BIND:-0.0.0.0}:${BOM_NOISE_HTTP_PORT:-8058}:8058"
+volumes:
+  menu-data:

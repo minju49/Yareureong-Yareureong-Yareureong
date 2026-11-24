@@ -404,7 +404,8 @@ def make_protocol(dataset_path, dataset, cases, profile_key, seed, model_info):
     files = [Path(__file__), Path(__file__).with_name('review.py'), Path(__file__).with_name('qwen_client.py'),
              Path(__file__).with_name('order_gate.py'), Path(__file__).with_name('menu_policy.json'),
              Path(__file__).with_name('run_review.py'), Path(__file__).with_name('run_school.py'),
-             Path(__file__).with_name('option_spacing.py'),Path(__file__).with_name('case_context.py')]
+             Path(__file__).with_name('option_spacing.py'),Path(__file__).with_name('case_context.py'),
+             Path(__file__).with_name('gate_evidence.py')]
     return {'version': VERSION, 'created_at': now(), 'profile_key': profile_key, 'profile': copy.deepcopy(PROFILES[profile_key]),
             'model_info': model_info, 'policy_version': POLICY['version'], 'contract_version': CONTRACT_VERSION,
             'gate_version': GATE_VERSION, 'transport_version': TRANSPORT_VERSION,

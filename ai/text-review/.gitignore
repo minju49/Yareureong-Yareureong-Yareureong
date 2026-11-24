@@ -10,6 +10,7 @@ diagnostics/
 records/
 .env
 school.local.json
+integration.local.json
 .env.*
 !.env.example
 *.log
@@ -25,3 +26,4 @@ school.local.json
 *.bin
 7_최근결과위치.txt
 마지막음성결과위치.txt
+!integration_demo/static/prompts/*.wav

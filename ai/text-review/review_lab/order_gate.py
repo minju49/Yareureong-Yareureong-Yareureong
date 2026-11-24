@@ -11,8 +11,9 @@ import re
 import time
 
 from review import MENUS, POLICY, exact_mentions, policy_check, review_transcript
+from gate_evidence import validation_facts
 
-GATE_VERSION = 'bom-order-gate-0.2'
+GATE_VERSION = 'bom-order-gate-0.3'
 LABELS = {'ready': '확정 가능(필드 수준)', 'ask': '되묻기', 'menu_check': '메뉴 확인',
           'hold': '판정 보류', 'unavailable': '응답 확인 불가'}
 
@@ -31,7 +32,7 @@ def validate_order(row, model_text, context=None, *, evidence_text=None, changes
     started = time.perf_counter()
     source = model_text if evidence_text is None else evidence_text
     context = copy.deepcopy(context or {})
-    facts = policy_check(source, context)
+    facts = validation_facts(source, context)
     mentions = exact_mentions(source)
     ids = list(dict.fromkeys(m['menu_id'] for m in mentions))
     if not ids and facts.get('scope') == 'simple_single_add': ids = [facts['menu_id']]

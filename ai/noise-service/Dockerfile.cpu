@@ -1,0 +1,11 @@
+FROM python:3.11-slim-bookworm
+WORKDIR /opt/bom-noise
+ENV PYTHONUTF8=1 PYTHONUNBUFFERED=1
+RUN pip install --no-cache-dir torch==2.7.1 --index-url https://download.pytorch.org/whl/cpu \
+    && pip install --no-cache-dir modelscope==1.33.0 numpy==1.26.4 scipy==1.15.3 addict==2.4.0
+COPY server.py .
+COPY audio_lab/model_files.py audio_lab/zip_denoiser.py audio_lab/
+COPY audio_lab/models/zipenhancer/ audio_lab/models/zipenhancer/
+RUN python -c "import sys; sys.path.insert(0, 'audio_lab'); from model_files import verify; verify(); from zip_denoiser import ZipDenoiser; ZipDenoiser(device='cpu')"
+EXPOSE 8058
+CMD ["python", "server.py", "--device", "cpu"]
