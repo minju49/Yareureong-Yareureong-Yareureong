@@ -1,0 +1,597 @@
+{
+  "version": "bom-additional20-draft-1.0",
+  "source_kind": "additional_development_after_school_error_analysis",
+  "annotation_status": "사용자 정책으로 먼저 작성한 추가 개발 정답 초안. 팀원의 독립 검수 전.",
+  "scope": "기존 학교 오답을 본 후 설계. 미사용 최종 시험셋이 아니다. 16개 슬롯·질문 유무 채점, 4개는 보류 여부와 질문 내용 수동 검토. 문맥은 선택한 직전 질문의 확정 사실이며 정답을 미리 채우지 않는다.",
+  "case_count": 20,
+  "cases": [
+    {
+      "id": "D01",
+      "category": "다른 메뉴 수량 답변",
+      "text": "두 잔이요",
+      "context": "custom",
+      "context_data": {
+        "menu_id": "vanilla_latte",
+        "quantity": null,
+        "temperature": "ice",
+        "awaiting": "quantity",
+        "previous_question": "몇 잔 드릴까요?",
+        "previous_user_text": "아바라 주세요"
+      },
+      "source_kind": "additional_development_after_school_error_analysis",
+      "expected_model": {
+        "intent": "add",
+        "items": [
+          {
+            "menu_id": "vanilla_latte",
+            "quantity": 2,
+            "temperature": "ice",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": false,
+        "question_required": false
+      },
+      "must_block": false,
+      "question_goal": "아이스 바닐라라떼 2잔. 추가 질문 없음.",
+      "note": "학교의 기존 결과를 본 후에 설계한 추가 개발 점검.",
+      "preserve_tokens": [
+        "두"
+      ]
+    },
+    {
+      "id": "D02",
+      "category": "다른 메뉴 수량 답변",
+      "text": "세 개만요",
+      "context": "custom",
+      "context_data": {
+        "menu_id": "strawberry_latte",
+        "quantity": null,
+        "temperature": "ice",
+        "awaiting": "quantity",
+        "previous_question": "몇 잔 드릴까요?",
+        "previous_user_text": "딸기라떼 주세요"
+      },
+      "source_kind": "additional_development_after_school_error_analysis",
+      "expected_model": {
+        "intent": "add",
+        "items": [
+          {
+            "menu_id": "strawberry_latte",
+            "quantity": 3,
+            "temperature": "ice",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": false,
+        "question_required": false
+      },
+      "must_block": false,
+      "question_goal": "딸기라떼 3잔. 온도 재질문 없음.",
+      "note": "학교의 기존 결과를 본 후에 설계한 추가 개발 점검.",
+      "preserve_tokens": [
+        "세"
+      ]
+    },
+    {
+      "id": "D03",
+      "category": "다른 메뉴 수량 답변",
+      "text": "하나로 주세요",
+      "context": "custom",
+      "context_data": {
+        "menu_id": "mango_smoothie",
+        "quantity": null,
+        "temperature": "ice",
+        "awaiting": "quantity",
+        "previous_question": "몇 잔 드릴까요?",
+        "previous_user_text": "망고스무디 부탁해요"
+      },
+      "source_kind": "additional_development_after_school_error_analysis",
+      "expected_model": {
+        "intent": "add",
+        "items": [
+          {
+            "menu_id": "mango_smoothie",
+            "quantity": 1,
+            "temperature": "ice",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": false,
+        "question_required": false
+      },
+      "must_block": false,
+      "question_goal": "망고스무디 1잔. 온도 재질문 없음.",
+      "note": "학교의 기존 결과를 본 후에 설계한 추가 개발 점검.",
+      "preserve_tokens": [
+        "하나"
+      ]
+    },
+    {
+      "id": "D04",
+      "category": "다른 메뉴 수량 답변",
+      "text": "네 잔으로 할게요",
+      "context": "custom",
+      "context_data": {
+        "menu_id": "cafe_latte",
+        "quantity": null,
+        "temperature": "hot",
+        "awaiting": "quantity",
+        "previous_question": "몇 잔 드릴까요?",
+        "previous_user_text": "따뜻한 카페라떼 부탁해요"
+      },
+      "source_kind": "additional_development_after_school_error_analysis",
+      "expected_model": {
+        "intent": "add",
+        "items": [
+          {
+            "menu_id": "cafe_latte",
+            "quantity": 4,
+            "temperature": "hot",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": false,
+        "question_required": false
+      },
+      "must_block": false,
+      "question_goal": "따뜻한 카페라떼 4잔.",
+      "note": "학교의 기존 결과를 본 후에 설계한 추가 개발 점검.",
+      "preserve_tokens": [
+        "네"
+      ]
+    },
+    {
+      "id": "D05",
+      "category": "다른 메뉴 온도 답변",
+      "text": "차가운 걸로 주세요",
+      "context": "custom",
+      "context_data": {
+        "menu_id": "americano",
+        "quantity": 2,
+        "temperature": null,
+        "awaiting": "temperature",
+        "previous_question": "따뜻하게 드릴까요, 차갑게 드릴까요?",
+        "previous_user_text": "아메리카노 두 잔 준비해주세요"
+      },
+      "source_kind": "additional_development_after_school_error_analysis",
+      "expected_model": {
+        "intent": "add",
+        "items": [
+          {
+            "menu_id": "americano",
+            "quantity": 2,
+            "temperature": "ice",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": false,
+        "question_required": false
+      },
+      "must_block": false,
+      "question_goal": "아메리카노 2잔을 차갑게.",
+      "note": "학교의 기존 결과를 본 후에 설계한 추가 개발 점검.",
+      "preserve_tokens": []
+    },
+    {
+      "id": "D06",
+      "category": "다른 메뉴 온도 답변",
+      "text": "따뜻하게 해주세요",
+      "context": "custom",
+      "context_data": {
+        "menu_id": "vanilla_latte",
+        "quantity": 1,
+        "temperature": null,
+        "awaiting": "temperature",
+        "previous_question": "따뜻하게 드릴까요, 차갑게 드릴까요?",
+        "previous_user_text": "바닐라라떼 한 잔 부탁해요"
+      },
+      "source_kind": "additional_development_after_school_error_analysis",
+      "expected_model": {
+        "intent": "add",
+        "items": [
+          {
+            "menu_id": "vanilla_latte",
+            "quantity": 1,
+            "temperature": "hot",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": false,
+        "question_required": false
+      },
+      "must_block": false,
+      "question_goal": "바닐라라떼 1잔을 따뜻하게.",
+      "note": "학교의 기존 결과를 본 후에 설계한 추가 개발 점검.",
+      "preserve_tokens": []
+    },
+    {
+      "id": "D07",
+      "category": "다른 메뉴 온도 답변",
+      "text": "아이스로 해주세요",
+      "context": "custom",
+      "context_data": {
+        "menu_id": "cafe_latte",
+        "quantity": 3,
+        "temperature": null,
+        "awaiting": "temperature",
+        "previous_question": "따뜻하게 드릴까요, 차갑게 드릴까요?",
+        "previous_user_text": "카페라떼 세 잔 부탁해요"
+      },
+      "source_kind": "additional_development_after_school_error_analysis",
+      "expected_model": {
+        "intent": "add",
+        "items": [
+          {
+            "menu_id": "cafe_latte",
+            "quantity": 3,
+            "temperature": "ice",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": false,
+        "question_required": false
+      },
+      "must_block": false,
+      "question_goal": "카페라떼 3잔을 차갑게.",
+      "note": "학교의 기존 결과를 본 후에 설계한 추가 개발 점검.",
+      "preserve_tokens": []
+    },
+    {
+      "id": "D08",
+      "category": "다른 메뉴 온도 답변",
+      "text": "뜨거운 걸로요",
+      "context": "custom",
+      "context_data": {
+        "menu_id": "americano",
+        "quantity": 1,
+        "temperature": null,
+        "awaiting": "temperature",
+        "previous_question": "따뜻하게 드릴까요, 차갑게 드릴까요?",
+        "previous_user_text": "아메리카노 한 잔 부탁해요"
+      },
+      "source_kind": "additional_development_after_school_error_analysis",
+      "expected_model": {
+        "intent": "add",
+        "items": [
+          {
+            "menu_id": "americano",
+            "quantity": 1,
+            "temperature": "hot",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": false,
+        "question_required": false
+      },
+      "must_block": false,
+      "question_goal": "아메리카노 1잔을 따뜻하게.",
+      "note": "학교의 기존 결과를 본 후에 설계한 추가 개발 점검.",
+      "preserve_tokens": []
+    },
+    {
+      "id": "D09",
+      "category": "휘핑 짧은 답변",
+      "text": "빼주세요",
+      "context": "custom",
+      "context_data": {
+        "menu_id": "cafe_mocha",
+        "quantity": 2,
+        "temperature": "hot",
+        "awaiting": "whipped_cream",
+        "previous_question": "휘핑은 일반, 많이, 적게, 빼기 중 어떻게 드릴까요?",
+        "previous_user_text": "따뜻한 카페모카 두 잔 준비해주세요"
+      },
+      "source_kind": "additional_development_after_school_error_analysis",
+      "expected_model": {
+        "intent": "add",
+        "items": [
+          {
+            "menu_id": "cafe_mocha",
+            "quantity": 2,
+            "temperature": "hot",
+            "size": "regular",
+            "whipped_cream": "none",
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": false,
+        "question_required": false
+      },
+      "must_block": false,
+      "question_goal": "따뜻한 카페모카 2잔, 휘핑 빼기.",
+      "note": "학교의 기존 결과를 본 후에 설계한 추가 개발 점검.",
+      "preserve_tokens": [
+        "빼"
+      ]
+    },
+    {
+      "id": "D10",
+      "category": "휘핑 짧은 답변",
+      "text": "보통으로요",
+      "context": "custom",
+      "context_data": {
+        "menu_id": "cafe_mocha",
+        "quantity": 1,
+        "temperature": "hot",
+        "awaiting": "whipped_cream",
+        "previous_question": "휘핑은 일반, 많이, 적게, 빼기 중 어떻게 드릴까요?",
+        "previous_user_text": "따뜻한 카페모카 한 잔 부탁해요"
+      },
+      "source_kind": "additional_development_after_school_error_analysis",
+      "expected_model": {
+        "intent": "add",
+        "items": [
+          {
+            "menu_id": "cafe_mocha",
+            "quantity": 1,
+            "temperature": "hot",
+            "size": "regular",
+            "whipped_cream": "normal",
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": false,
+        "question_required": false
+      },
+      "must_block": false,
+      "question_goal": "따뜻한 카페모카 1잔, 휘핑 일반.",
+      "note": "학교의 기존 결과를 본 후에 설계한 추가 개발 점검.",
+      "preserve_tokens": []
+    },
+    {
+      "id": "D11",
+      "category": "휘핑 짧은 답변",
+      "text": "많이 올려주세요",
+      "context": "custom",
+      "context_data": {
+        "menu_id": "cafe_mocha",
+        "quantity": 2,
+        "temperature": "ice",
+        "awaiting": "whipped_cream",
+        "previous_question": "휘핑은 일반, 많이, 적게, 빼기 중 어떻게 드릴까요?",
+        "previous_user_text": "아이스 카페모카 두 잔 부탁해요"
+      },
+      "source_kind": "additional_development_after_school_error_analysis",
+      "expected_model": {
+        "intent": "add",
+        "items": [
+          {
+            "menu_id": "cafe_mocha",
+            "quantity": 2,
+            "temperature": "ice",
+            "size": "regular",
+            "whipped_cream": "extra",
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": false,
+        "question_required": false
+      },
+      "must_block": false,
+      "question_goal": "아이스 카페모카 2잔, 휘핑 많이.",
+      "note": "학교의 기존 결과를 본 후에 설계한 추가 개발 점검.",
+      "preserve_tokens": []
+    },
+    {
+      "id": "D12",
+      "category": "휘핑 짧은 답변",
+      "text": "조금만 올려줘요",
+      "context": "custom",
+      "context_data": {
+        "menu_id": "cafe_mocha",
+        "quantity": 1,
+        "temperature": "ice",
+        "awaiting": "whipped_cream",
+        "previous_question": "휘핑은 일반, 많이, 적게, 빼기 중 어떻게 드릴까요?",
+        "previous_user_text": "아이스 카페모카 한 잔 준비해주세요"
+      },
+      "source_kind": "additional_development_after_school_error_analysis",
+      "expected_model": {
+        "intent": "add",
+        "items": [
+          {
+            "menu_id": "cafe_mocha",
+            "quantity": 1,
+            "temperature": "ice",
+            "size": "regular",
+            "whipped_cream": "light",
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": false,
+        "question_required": false
+      },
+      "must_block": false,
+      "question_goal": "아이스 카페모카 1잔, 휘핑 적게.",
+      "note": "학교의 기존 결과를 본 후에 설계한 추가 개발 점검.",
+      "preserve_tokens": []
+    },
+    {
+      "id": "D13",
+      "category": "누락 수량",
+      "text": "차가운 바닐라라떼로 할게요",
+      "context": "none",
+      "source_kind": "additional_development_after_school_error_analysis",
+      "expected_model": {
+        "intent": "clarify",
+        "items": [
+          {
+            "menu_id": "vanilla_latte",
+            "quantity": null,
+            "temperature": "ice",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": true,
+        "question_required": true
+      },
+      "must_block": true,
+      "question_goal": "수량만 질문. 임의로 1잔을 넣지 않음.",
+      "note": "학교의 기존 결과를 본 후에 설계한 추가 개발 점검.",
+      "preserve_tokens": []
+    },
+    {
+      "id": "D14",
+      "category": "누락 온도",
+      "text": "아메리카노 두 잔 준비해주세요",
+      "context": "none",
+      "source_kind": "additional_development_after_school_error_analysis",
+      "expected_model": {
+        "intent": "clarify",
+        "items": [
+          {
+            "menu_id": "americano",
+            "quantity": 2,
+            "temperature": null,
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": true,
+        "question_required": true
+      },
+      "must_block": true,
+      "question_goal": "온도만 질문. 수량 재질문 없음.",
+      "note": "학교의 기존 결과를 본 후에 설계한 추가 개발 점검.",
+      "preserve_tokens": [
+        "두"
+      ]
+    },
+    {
+      "id": "D15",
+      "category": "Only Ice",
+      "text": "딸기라떼 세 잔 부탁해요",
+      "context": "none",
+      "source_kind": "additional_development_after_school_error_analysis",
+      "expected_model": {
+        "intent": "add",
+        "items": [
+          {
+            "menu_id": "strawberry_latte",
+            "quantity": 3,
+            "temperature": "ice",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": false,
+        "question_required": false
+      },
+      "must_block": false,
+      "question_goal": "딸기라떼 3잔. 온도 재질문 없음.",
+      "note": "학교의 기존 결과를 본 후에 설계한 추가 개발 점검.",
+      "preserve_tokens": [
+        "세"
+      ]
+    },
+    {
+      "id": "D16",
+      "category": "누락 휘핑",
+      "text": "아이스 카페모카 한 잔 부탁해요",
+      "context": "none",
+      "source_kind": "additional_development_after_school_error_analysis",
+      "expected_model": {
+        "intent": "clarify",
+        "items": [
+          {
+            "menu_id": "cafe_mocha",
+            "quantity": 1,
+            "temperature": "ice",
+            "size": "regular",
+            "whipped_cream": null,
+            "custom_note": ""
+          }
+        ],
+        "needs_clarification": true,
+        "question_required": true
+      },
+      "must_block": true,
+      "question_goal": "휘핑만 질문. 수량·온도 재질문 없음.",
+      "note": "학교의 기존 결과를 본 후에 설계한 추가 개발 점검.",
+      "preserve_tokens": [
+        "한"
+      ]
+    },
+    {
+      "id": "D17",
+      "category": "모호한 메뉴",
+      "text": "라떼 종류는 아무거나 한 잔이요",
+      "context": "none",
+      "source_kind": "additional_development_after_school_error_analysis",
+      "expected_model": null,
+      "must_block": true,
+      "question_goal": "어떤 라떼인지 질문. 메뉴를 임의 선택하지 않음. 정확한 JSON 하나로 채점하지 않고 보류 여부와 질문을 직접 검토.",
+      "note": "학교의 기존 결과를 본 후에 설계한 추가 개발 점검.",
+      "preserve_tokens": [
+        "한"
+      ]
+    },
+    {
+      "id": "D18",
+      "category": "판매 불가 온도",
+      "text": "따뜻한 망고스무디 한 잔 주세요",
+      "context": "none",
+      "source_kind": "additional_development_after_school_error_analysis",
+      "expected_model": null,
+      "must_block": true,
+      "question_goal": "망고스무디는 차갑게만 제공한다고 안내하고 확인. 따뜻한 스무디를 확정하지 않음.",
+      "note": "학교의 기존 결과를 본 후에 설계한 추가 개발 점검.",
+      "preserve_tokens": [
+        "한"
+      ]
+    },
+    {
+      "id": "D19",
+      "category": "대상 불명확",
+      "text": "그 음료 하나만 빼주세요",
+      "context": "none",
+      "source_kind": "additional_development_after_school_error_analysis",
+      "expected_model": null,
+      "must_block": true,
+      "question_goal": "빈 문맥이므로 어떤 메뉴인지 확인. 임의 삭제·추가 금지.",
+      "note": "학교의 기존 결과를 본 후에 설계한 추가 개발 점검.",
+      "preserve_tokens": [
+        "하나",
+        "빼"
+      ]
+    },
+    {
+      "id": "D20",
+      "category": "복합 정정 보존",
+      "text": "아아 한 잔 말고 아바라 두 잔으로 바꿔줘",
+      "context": "none",
+      "source_kind": "additional_development_after_school_error_analysis",
+      "expected_model": null,
+      "must_block": true,
+      "question_goal": "정정·수량을 보존하고 별도 확인. 이번 단일 추가 주문 검증 범위에서는 보류. 실제 장바구니 수정 성공으로 집계하지 않음.",
+      "note": "학교의 기존 결과를 본 후에 설계한 추가 개발 점검.",
+      "preserve_tokens": [
+        "한",
+        "말고",
+        "두",
+        "바꿔"
+      ]
+    }
+  ]
+}

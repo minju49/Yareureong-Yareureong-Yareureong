@@ -25,8 +25,9 @@ from review import POLICY, review_transcript
 from qwen_client import PROFILES, CONTRACT_VERSION, TRANSPORT_VERSION, ORDER_SCHEMA, PROMPT, check_model, request_order
 from order_gate import GATE_VERSION, validate_order
 from run_review import CONTEXTS
+from case_context import resolve_context
 
-VERSION = 'bom-review-batch-1.2'
+VERSION = 'bom-review-batch-1.3'
 ROOT = Path(__file__).resolve().parent.parent
 DATASET = Path(__file__).with_name('batch_cases.json')
 KST = timezone(timedelta(hours=9))
@@ -69,8 +70,9 @@ def load_cases(path=DATASET):
     if len(set(ids)) != len(ids) or any(not ident.isalnum() for ident in ids):
         raise ValueError('문장 ID는 중복 없는 영문·숫자여야 합니다.')
     for case in cases:
-        if case['context'] not in CONTEXTS or not isinstance(case['text'], str) or not case['text'].strip():
+        if not isinstance(case['text'], str) or not case['text'].strip():
             raise ValueError('문장과 문맥을 확인해주세요: ' + case['id'])
+        resolve_context(case,CONTEXTS)
         if type(case['must_block']) is not bool:
             raise ValueError('must_block은 참/거짓이어야 합니다.')
         expected = case['expected_model']
@@ -194,7 +196,7 @@ def schedule(case, review, changed_index):
 
 
 def execute_case(case, profile, order):
-    context = copy.deepcopy(CONTEXTS[case['context']])
+    context = resolve_context(case,CONTEXTS)
     reviewed = review_transcript(case['text'], context)
     texts = {'A_original': reviewed['original_text'], 'B_reviewed': reviewed['reviewed_text']}
     responses = {}
@@ -402,7 +404,7 @@ def make_protocol(dataset_path, dataset, cases, profile_key, seed, model_info):
     files = [Path(__file__), Path(__file__).with_name('review.py'), Path(__file__).with_name('qwen_client.py'),
              Path(__file__).with_name('order_gate.py'), Path(__file__).with_name('menu_policy.json'),
              Path(__file__).with_name('run_review.py'), Path(__file__).with_name('run_school.py'),
-             Path(__file__).with_name('option_spacing.py')]
+             Path(__file__).with_name('option_spacing.py'),Path(__file__).with_name('case_context.py')]
     return {'version': VERSION, 'created_at': now(), 'profile_key': profile_key, 'profile': copy.deepcopy(PROFILES[profile_key]),
             'model_info': model_info, 'policy_version': POLICY['version'], 'contract_version': CONTRACT_VERSION,
             'gate_version': GATE_VERSION, 'transport_version': TRANSPORT_VERSION,
@@ -448,7 +450,7 @@ def main():
     if args.validate_only:
         failures = []
         for case in cases:
-            review = review_transcript(case['text'], CONTEXTS[case['context']])
+            review = review_transcript(case['text'], resolve_context(case,CONTEXTS))
             if not all(token in review['lexical_text'] for token in case['preserve_tokens']):
                 failures.append(case['id'])
         print(f"입력 점검: {len(cases)}개 / 정답표 채점 가능 {sum(c['expected_model'] is not None for c in cases)}개")
@@ -491,7 +493,7 @@ def main():
     interrupted, failed_connection = False, False
     try:
         for index, case in enumerate(cases, 1):
-            preview = review_transcript(case['text'], CONTEXTS[case['context']])
+            preview = review_transcript(case['text'], resolve_context(case,CONTEXTS))
             order = schedule(case, preview, changed_index)
             if len(order) == 2:
                 changed_index += 1
